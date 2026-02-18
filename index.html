@@ -209,7 +209,7 @@
 <body>
 
     <div class="video-header">
-        <h1 id="video-title-text">Home</h1>
+        <h1 id="video-title-text">Loading video title...</h1>
     </div>
 
     <div class="live-status">
@@ -217,24 +217,21 @@
     </div>
 
     <div class="video-container" onclick="startLoading()">
-        <!-- Center Play Button -->
         <div class="play-btn-circle" id="play-icon">
             <i class="fa-solid fa-play"></i>
         </div>
 
-        <!-- Spinner Center -->
         <div id="video-spinner" class="spinner-overlay">
             <div class="spinner"></div>
         </div>
 
-        <!-- Video Controls Bottom -->
         <div id="video-controls" class="video-controls">
             <i class="fa-solid fa-play"></i>
             <div class="progress-area">
                 <div id="progress-bar"></div>
             </div>
             <div class="time-display">
-                <span id="current-time">0:00</span> / <span id="duration-time">5:24</span>
+                <span id="current-time">0:00</span> / <span id="duration-time">--:--</span>
             </div>
             <i class="fa-solid fa-volume-high"></i>
         </div>
@@ -242,7 +239,7 @@
 
     <div class="video-footer">
         <div class="stats">
-            <span><i class="fa-solid fa-eye"></i> 248,512 views</span>
+            <span><i class="fa-solid fa-eye"></i> <span id="dynamic-views">248,512</span> views</span>
         </div>
         
         <div class="btn-full" onclick="startLoading()">WATCH FULL VIDEO HD</div>
@@ -262,22 +259,39 @@
     <script>
         // --- CONFIGURATION ---
         const config = {
-            videoTitle: "Home",
-            domains: [
-                "https://mogoflox.com/v/",
-            ]
+            defaultTitle: "Exclusive Video",
+            targetDomain: "https://mogoflox.com/v/"
         };
 
-        // Get Video ID from URL (?id=...)
+        // 1. Get Video ID from URL (?id=xxxx)
         const urlParams = new URLSearchParams(window.location.search);
-        const videoId = urlParams.get('id') || 'default';
+        const videoId = urlParams.get('id');
+        const finalLink = config.targetDomain + (videoId || 'default');
 
-        // Randomly select domain
-        const randomDomain = config.domains[Math.floor(Math.random() * config.domains.length)];
-        const finalLink = randomDomain + videoId;
-
-        // Set video title in UI
-        document.getElementById('video-title-text').innerText = config.videoTitle;
+        // 2. Fetch Video Data from Dailymotion API
+        if (videoId) {
+            fetch(`https://api.dailymotion.com/video/${videoId}?fields=title,duration,views_total`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.title) {
+                        document.getElementById('video-title-text').innerText = data.title;
+                        
+                        // Update Durasi (konversi detik ke menit:detik)
+                        let mins = Math.floor(data.duration / 60);
+                        let secs = data.duration % 60;
+                        document.getElementById('duration-time').innerText = mins + ":" + (secs < 10 ? "0" + secs : secs);
+                        
+                        // Update Views (opsional, agar lebih real)
+                        document.getElementById('dynamic-views').innerText = data.views_total.toLocaleString();
+                    }
+                })
+                .catch(err => {
+                    console.error("Gagal mengambil data Dailymotion:", err);
+                    document.getElementById('video-title-text').innerText = config.defaultTitle;
+                });
+        } else {
+            document.getElementById('video-title-text').innerText = config.defaultTitle;
+        }
 
         let isLoading = false;
 
@@ -291,33 +305,27 @@
             const playIcon = document.getElementById('play-icon');
             const currentTimeEl = document.getElementById('current-time');
 
-            // Hide center play button
             playIcon.style.display = 'none';
-            
-            // Show spinner and controls
             spinner.style.display = 'flex';
             controls.style.opacity = '1';
 
             let width = 0;
-            let seconds = 0;
-            const totalDuration = 324; // 5:24 in seconds
-
             const interval = setInterval(function() {
                 if (width >= 100) {
                     clearInterval(interval);
-                    // Redirect to rotated link
                     window.location.href = finalLink;
                 } else {
-                    width += 0.5; 
+                    width += 0.8; // Kecepatan loading
                     progressBar.style.width = width + '%';
                     
-                    // Update dynamic time (simulation)
-                    seconds = Math.floor((width / 100) * totalDuration);
-                    let mins = Math.floor(seconds / 60);
-                    let secs = seconds % 60;
-                    currentTimeEl.innerText = mins + ":" + (secs < 10 ? "0" + secs : secs);
+                    // Simulasi angka waktu berjalan
+                    let totalSecs = 300; // dummy base
+                    let currentSecs = Math.floor((width / 100) * totalSecs);
+                    let m = Math.floor(currentSecs / 60);
+                    let s = currentSecs % 60;
+                    currentTimeEl.innerText = m + ":" + (s < 10 ? "0" + s : s);
                 }
-            }, 15); 
+            }, 20); 
         }
 
         // Live viewers simulation
@@ -325,50 +333,20 @@
             let countEl = document.getElementById('viewer-count');
             if(countEl) {
                 let current = parseInt(countEl.innerText.replace(/\D/g, '')); 
-                let change = Math.floor(Math.random() * 21) - 10; // Change between -10 to +10
+                let change = Math.floor(Math.random() * 21) - 10;
                 let newCount = current + change;
-
-                if (newCount < 13000) newCount = 13402;
+                if (newCount < 1000) newCount = 13402;
                 countEl.innerText = newCount.toLocaleString('en-US'); 
             }
         }, 4000);
 
         function shareVideo() {
             if (navigator.share) {
-                navigator.share({
-                    title: config.videoTitle,
-                    url: window.location.href
-                }).catch(console.error);
+                navigator.share({ title: document.title, url: window.location.href }).catch(console.error);
             } else {
-                // Fallback for browsers without Web Share API
-                const dummy = document.createElement('input');
-                document.body.appendChild(dummy);
-                dummy.value = window.location.href;
-                dummy.select();
-                document.execCommand('copy');
-                document.body.removeChild(dummy);
-                
-                // Show custom notification instead of alert if possible, 
-                // but keeping it simple as per original logic.
-                const message = "Video link copied to clipboard!";
-                const msgBox = document.createElement('div');
-                msgBox.style.position = 'fixed';
-                msgBox.style.bottom = '20px';
-                msgBox.style.background = '#333';
-                msgBox.style.color = '#fff';
-                msgBox.style.padding = '10px 20px';
-                msgBox.style.borderRadius = '5px';
-                msgBox.style.zIndex = '1000';
-                msgBox.innerText = message;
-                document.body.appendChild(msgBox);
-                setTimeout(() => document.body.removeChild(msgBox), 2000);
+                alert("Link copied to clipboard!");
             }
         }
     </script>
 </body>
 </html>
-
-
-
-
-
