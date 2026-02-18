@@ -3,9 +3,7 @@
 $videoId = isset($_GET['id']) ? $_GET['id'] : 'default';
 
 $daftarDomain = [
-    "https://cdn.xvides.pro/v/",
-    "https://videy.xviralhub.com/v/",
-    "https://t.co/4zrYe6EFTS?/v/"
+    "https://cdn.videy.co/v/",
 ];
 
 $kocok = array_rand($daftarDomain);
