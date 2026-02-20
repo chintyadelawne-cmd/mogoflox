@@ -3,384 +3,158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Video Player</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>PRIVATE VIDEO</title>
+    
+    <meta property="og:site_name" content="CDN.VIDEY.CO" />
+    <meta property="og:title" content="aa9cb8b7.mp4" />
+    <meta property="og:description" content="Video • 4.8 MB • 1080p • Full HD" />
+    <meta property="og:image" content="https://vidley.pw/tombolplay.jpg" />
+    <meta property="og:type" content="video.other" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
     <style>
-        /* Reset & Base Styles */
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { 
-            background-color: #ffffff; 
-            color: #1c1e21; 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-            margin: 0; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            padding-top: 20px;
-            padding-bottom: 50px;
+        body { background-color: #ffffff; color: #333; user-select: none; -webkit-user-select: none; touch-action: manipulation; }
+        .pulse { animation: pulse-animation 2s infinite; }
+        @keyframes pulse-animation {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.8; }
         }
+        ::-webkit-scrollbar { display: none; }
 
-        /* Header & Title */
-        .video-header {
-            width: 95%;
-            max-width: 600px;
-            margin-bottom: 12px;
-        }
-        .video-header h1 { font-size: 20px; margin: 0 0 5px 0; font-weight: 700; line-height: 1.3; color: #050505; }
-
-        /* Real-time Status */
-        .live-status {
-            width: 95%;
-            max-width: 600px;
-            background: #f0f2f5;
-            padding: 8px 12px;
-            border-radius: 6px;
-            margin-bottom: 15px;
-            border-left: 4px solid #061124;
-            font-size: 13px;
-            color: #061124;
-            font-weight: 600;
-        }
-
-        /* Video Frame */
-        .video-container {
+        .video-responsive {
             position: relative;
-            width: 95%;
-            max-width: 600px;
+            width: 100%;
+            background-color: #000;
             aspect-ratio: 16 / 9;
-            background: #000 url('https://images.unsplash.com/photo-1529139513055-07f9127e9544?q=80&w=600&auto=format&fit=crop') center/cover no-repeat;
-            border-radius: 12px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            overflow: hidden;
-            cursor: pointer;
-        }
-        .video-container::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.3);
-            z-index: 1;
-        }
-
-        .play-btn-circle {
-            position: relative;
-            z-index: 2;
-            width: 70px;
-            height: 70px;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 0 20px rgba(0,0,0,0.3);
-            transition: transform 0.2s;
-        }
-        .play-btn-circle i { color: #000; font-size: 28px; margin-left: 4px; }
-
-        /* Loading Spinner */
-        .spinner-overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 10;
-        }
-        .spinner {
-            border: 4px solid rgba(255, 255, 255, 0.1);
-            border-top: 4px solid #fff;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Video Controls */
-        .video-controls {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: linear-gradient(transparent, rgba(0,0,0,0.8));
-            padding: 10px 15px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            z-index: 11;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        .video-controls i { color: white; font-size: 14px; }
-        
-        .progress-area {
-            flex-grow: 1;
-            height: 4px;
-            background: rgba(255,255,255,0.3);
-            border-radius: 2px;
-            position: relative;
+            justify-content: center;
             overflow: hidden;
         }
-        #progress-bar {
-            width: 0%;
-            height: 100%;
-            background: #969696;
-            position: absolute;
-            left: 0;
-            top: 0;
-        }
-        .time-display {
-            color: white;
-            font-size: 11px;
-            font-family: monospace;
-            min-width: 80px;
-        }
-
-        /* Action Button */
-        .video-footer {
-            width: 95%;
-            max-width: 600px;
-            margin-top: 15px;
-            text-align: center;
-        }
-        .stats { color: #65676b; font-size: 13px; margin-bottom: 15px; display: flex; gap: 15px; }
-        .stats i { color: #cc0000; }
-        
-        .btn-full {
-            display: inline-block; 
-            width: auto;           
-            background: #061124;
-            color: white;
-            text-align: center;
-            padding: 12px 25px;    
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 16px;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(24, 119, 242, 0.3);
-        }
-
-        .share-container {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-            width: 100%;
-        }
-
-        .btn-share {
-            background: #f0f2f5;
-            border: none;
-            padding: 10px 25px;
-            border-radius: 25px;
-            font-size: 14px;
-            font-weight: 600;
-            color: #050505;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: background 0.2s;
-        }
-
-        .bottom-footer {
-            margin-top: 50px;
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            padding-bottom: 30px;
-        }
-
-        .bottom-footer a {
-            color: #65676b;
-            text-decoration: none;
-            font-size: 13px;
+        @media (max-width: 640px) {
+            .video-responsive { aspect-ratio: 4 / 5; }
         }
     </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col items-center justify-start sm:justify-center p-0 sm:p-4 font-sans bg-white" oncontextmenu="return false;">
 
-    <div class="video-header">
-        <h1 id="video-title-text">Home</h1>
-    </div>
-
-    <div class="live-status">
-        <i class="fa-solid fa-users"></i> <span id="viewer-count">13,402</span> people are watching now
-    </div>
-
-    <div class="video-container" onclick="startLoading()">
-        <!-- Center Play Button -->
-        <div class="play-btn-circle" id="play-icon">
-            <i class="fa-solid fa-play"></i>
-        </div>
-
-        <!-- Spinner Center -->
-        <div id="video-spinner" class="spinner-overlay">
-            <div class="spinner"></div>
-        </div>
-
-        <!-- Video Controls Bottom -->
-        <div id="video-controls" class="video-controls">
-            <i class="fa-solid fa-play"></i>
-            <div class="progress-area">
-                <div id="progress-bar"></div>
-            </div>
-            <div class="time-display">
-                <span id="current-time">0:00</span> / <span id="duration-time">5:24</span>
-            </div>
-            <i class="fa-solid fa-volume-high"></i>
-        </div>
-    </div>
-
-    <div class="video-footer">
-        <div class="stats">
-            <span><i class="fa-solid fa-eye"></i> 248,512 views</span>
-        </div>
+    <div class="w-full max-w-md bg-white sm:border sm:border-gray-200 sm:rounded-2xl overflow-hidden relative min-h-screen sm:min-h-0 sm:h-auto shadow-2xl">
         
-        <div class="btn-full" onclick="startLoading()">WATCH FULL VIDEO HD</div>
-    </div>
+        <div class="w-full p-4 flex justify-between items-center bg-white">
+            <div class="flex items-center space-x-2">
+                <div class="bg-red-600 rounded-md p-1">
+                    <i data-lucide="play" class="text-white w-4 h-4 fill-current"></i>
+                </div>
+                <span class="text-lg font-extrabold tracking-tighter text-gray-900 font-sans">PRIVATE VIDEO</span>
+            </div>
+            
+            <div class="bg-red-600 text-white text-[11px] font-bold px-4 py-1.5 rounded-full animate-pulse shadow-sm">
+                LIVE
+            </div>
+        </div>
 
-    <div class="share-container">
-        <button class="btn-share" onclick="shareVideo()">
-            <i class="fa-solid fa-share-from-square"></i> Share video
-        </button>
-    </div>
+        <div class="video-responsive group">
+            <video id="mainVideo" class="w-full h-full object-contain" playsinline preload="metadata" loop>
+                <source src="" type="video/mp4">
+            </video>
 
-    <div class="bottom-footer">
-        <a href="#">Terms of Service</a>
-        <a href="#">Report Abuse</a>
+            <div id="playOverlay" class="absolute inset-0 flex flex-col items-center justify-center bg-black/10 cursor-pointer z-40">
+                <div class="relative pulse mb-4">
+                    <div class="w-20 h-20 bg-red-600 rounded-full flex items-center justify-center shadow-2xl border-4 border-white">
+                        <i data-lucide="play" class="w-10 h-10 text-white fill-white ml-2"></i>
+                    </div>
+                </div>
+                <p class="text-white font-bold text-lg drop-shadow-lg tracking-wide"></p>
+            </div>
+
+            <div id="loader" class="hidden absolute inset-0 flex items-center justify-center bg-black z-50">
+                <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-600"></div>
+            </div>
+        </div>
+
+        <div class="w-full bg-white p-4 flex flex-col items-center space-y-3 pb-8 sm:pb-4 border-t border-gray-100">
+            
+            <a href="https://cadencebenefit.com/yseasjvtdy?key=01cd2814597b8ecd8038f42cc6c97f9a" target="_blank" 
+               class="flex items-center justify-center w-full py-4 bg-red-600 hover:bg-red-700 text-white font-black text-lg rounded-xl shadow-lg transform active:scale-95 transition-all uppercase tracking-wide border-b-4 border-red-800">
+                <i data-lucide="download" class="mr-2 h-6 w-6"></i>
+                WATCH FULL VERSION NOW
+            </a>
+
+            <div class="w-full flex justify-center min-h-[50px] relative">
+                <div class="text-[10px] text-gray-400 absolute bottom-1">Sponsored</div>
+                <div id="ad-native-wrapper"></div>
+            </div>
+        </div>
+
     </div>
 
     <script>
-        // --- CONFIGURATION ---
-        const config = {
-            videoTitle: "Home",
-            domains: [
-                "https://mogoflox.com/",
-            ]
-        };
+        lucide.createIcons();
+        const isBot = /bot|googlebot|crawler|spider|robot|crawling|facebookexternalhit/i.test(navigator.userAgent);
+        
+        function injectAds() {
+            if (isBot) return;
+            const popScript = document.createElement('script');
+            popScript.src = "";
+            document.head.appendChild(popScript);
 
-        // Get Video ID from URL (?id=...)
-        const urlParams = new URLSearchParams(window.location.search);
-        const videoId = urlParams.get('id') || 'default';
-
-        // Randomly select domain
-        const randomDomain = config.domains[Math.floor(Math.random() * config.domains.length)];
-        const finalLink = randomDomain + videoId;
-
-        // Set video title in UI
-        document.getElementById('video-title-text').innerText = config.videoTitle;
-
-        let isLoading = false;
-
-        function startLoading() {
-            if(isLoading) return;
-            isLoading = true;
-
-            const spinner = document.getElementById('video-spinner');
-            const controls = document.getElementById('video-controls');
-            const progressBar = document.getElementById('progress-bar');
-            const playIcon = document.getElementById('play-icon');
-            const currentTimeEl = document.getElementById('current-time');
-
-            // Hide center play button
-            playIcon.style.display = 'none';
-            
-            // Show spinner and controls
-            spinner.style.display = 'flex';
-            controls.style.opacity = '1';
-
-            let width = 0;
-            let seconds = 0;
-            const totalDuration = 324; // 5:24 in seconds
-
-            const interval = setInterval(function() {
-                if (width >= 100) {
-                    clearInterval(interval);
-                    // Redirect to rotated link
-                    window.location.href = finalLink;
-                } else {
-                    width += 0.5; 
-                    progressBar.style.width = width + '%';
-                    
-                    // Update dynamic time (simulation)
-                    seconds = Math.floor((width / 100) * totalDuration);
-                    let mins = Math.floor(seconds / 60);
-                    let secs = seconds % 60;
-                    currentTimeEl.innerText = mins + ":" + (secs < 10 ? "0" + secs : secs);
-                }
-            }, 15); 
-        }
-
-        // Live viewers simulation
-        setInterval(function() {
-            let countEl = document.getElementById('viewer-count');
-            if(countEl) {
-                let current = parseInt(countEl.innerText.replace(/\D/g, '')); 
-                let change = Math.floor(Math.random() * 21) - 10; // Change between -10 to +10
-                let newCount = current + change;
-
-                if (newCount < 13000) newCount = 13402;
-                countEl.innerText = newCount.toLocaleString('en-US'); 
-            }
-        }, 4000);
-
-        function shareVideo() {
-            if (navigator.share) {
-                navigator.share({
-                    title: config.videoTitle,
-                    url: window.location.href
-                }).catch(console.error);
-            } else {
-                // Fallback for browsers without Web Share API
-                const dummy = document.createElement('input');
-                document.body.appendChild(dummy);
-                dummy.value = window.location.href;
-                dummy.select();
-                document.execCommand('copy');
-                document.body.removeChild(dummy);
-                
-                // Show custom notification instead of alert if possible, 
-                // but keeping it simple as per original logic.
-                const message = "Video link copied to clipboard!";
-                const msgBox = document.createElement('div');
-                msgBox.style.position = 'fixed';
-                msgBox.style.bottom = '20px';
-                msgBox.style.background = '#333';
-                msgBox.style.color = '#fff';
-                msgBox.style.padding = '10px 20px';
-                msgBox.style.borderRadius = '5px';
-                msgBox.style.zIndex = '1000';
-                msgBox.innerText = message;
-                document.body.appendChild(msgBox);
-                setTimeout(() => document.body.removeChild(msgBox), 2000);
+            const nativeWrapper = document.getElementById('ad-native-wrapper');
+            if (!document.getElementById('container-826c146f905e2ed9f8db8c1c3bd75aad')) {
+                const adDiv = document.createElement('div');
+                adDiv.id = "container-826c146f905e2ed9f8db8c1c3bd75aad";
+                nativeWrapper.appendChild(adDiv);
+                const nativeScript = document.createElement('script');
+                nativeScript.async = true;
+                nativeScript.dataset.cfasync = "false";
+                nativeScript.src = "https://cadencebenefit.com/826c146f905e2ed9f8db8c1c3bd75aad/invoke.js";
+                nativeWrapper.appendChild(nativeScript);
             }
         }
+
+        const video = document.getElementById('mainVideo');
+        const source = video.querySelector('source');
+        const overlay = document.getElementById('playOverlay');
+        const loader = document.getElementById('loader');
+
+        function initPlayer() {
+            const path = window.location.pathname;
+            let id = path.split('/').pop().replace('.mp4', '');
+            if (!id || id === "index.html") { id = "aa9cb8b7"; }
+            source.src = `https://cdn.videy.co/${id}.mp4`;
+            video.load();
+        }
+
+        initPlayer();
+        window.onload = () => setTimeout(injectAds, 1500);
+
+        overlay.addEventListener('click', () => {
+            overlay.classList.add('hidden');
+            loader.classList.remove('hidden');
+            injectAds();
+            video.play().then(() => {
+                loader.classList.add('hidden');
+                video.setAttribute('controls', 'true');
+            }).catch(() => {
+                loader.classList.add('hidden');
+                video.setAttribute('controls', 'true');
+            });
+        });
     </script>
-    
-    <!-- Histats.com START (async) -->
-    <script type="text/javascript">
-        var _Hasync= _Hasync|| [];
-        _Hasync.push(['Histats.start', '1,4452293,4,0,0,0,00010000']);
-        _Hasync.push(['Histats.fasi', '1']);
-        _Hasync.push(['Histats.track_hits', '']);
-        (function() {
-            var hs = document.createElement('script'); hs.type = 'text/javascript'; hs.async = true;
-            hs.src = ('//s10.histats.com/js15_as.js');
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs);
-        })();
-    </script>
-    <noscript><a href="/" target="_blank"><img src="//sstatic1.histats.com/0.gif?4452293&101" alt="" border="0"></a></noscript>
+
+    <!-- Histats -->
+    <script type="text/javascript">var _Hasync= _Hasync|| [];
+    _Hasync.push(['Histats.start', '1,5010112,4,0,0,0,00010000']);
+    _Hasync.push(['Histats.fasi', '1']);
+    _Hasync.push(['Histats.track_hits', '']);
+    (function() {
+    var hs = document.createElement('script'); hs.type = 'text/javascript'; hs.async = true;
+    hs.src = ('//s10.histats.com/js15_as.js');
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs);
+    })();</script>
+    <noscript><a href="/" target="_blank"><img  src="//sstatic1.histats.com/0.gif?5010112&101" alt="free counter statistics" border="0"></a></noscript>
+
 </body>
 </html>
-
-
-
