@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Ｍｏｇｏｆｌｏｘ</title>
+    <title>PRIVATE VIDEO</title>
     
     <meta property="og:site_name" content="CDN.VIDEY.CO" />
     <meta property="og:title" content="aa9cb8b7.mp4" />
@@ -24,18 +24,37 @@
         }
         ::-webkit-scrollbar { display: none; }
 
+        /* Container untuk Iklan Banner 320x50 */
+        .adsterra-banner-top {
+            width: 320px;
+            height: 50px;
+            margin: 5px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f9f9f9;
+            overflow: hidden;
+        }
+
+        /* Kontainer Video yang lebih fleksibel */
         .video-responsive {
             position: relative;
             width: 100%;
             background-color: #000;
-            aspect-ratio: 16 / 9;
+            /* Menghapus aspect-ratio kaku agar menyesuaikan konten video aslinya */
+            min-height: 200px; 
+            max-height: 80vh; /* Agar video tidak melebihi tinggi layar ponsel */
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
         }
-        @media (max-width: 640px) {
-            .video-responsive { aspect-ratio: 4 / 5; }
+        
+        video {
+            width: 100%;
+            height: auto;
+            max-height: 80vh;
+            object-fit: contain; /* Memastikan video tidak terpotong */
         }
     </style>
 </head>
@@ -43,6 +62,7 @@
 
     <div class="w-full max-w-md bg-white sm:border sm:border-gray-200 sm:rounded-2xl overflow-hidden relative min-h-screen sm:min-h-0 sm:h-auto shadow-2xl">
         
+        <!-- Header -->
         <div class="w-full p-4 flex justify-between items-center bg-white">
             <div class="flex items-center space-x-2">
                 <div class="bg-red-600 rounded-md p-1">
@@ -56,18 +76,33 @@
             </div>
         </div>
 
+        <!-- SLOT IKLAN ADSTERRA 320X50 -->
+        <div class="adsterra-banner-top">
+            <script type="text/javascript">
+                atOptions = {
+                    'key' : '1e6b8fa3672d9477a966fc79b56bf0e7',
+                    'format' : 'iframe',
+                    'height' : 50,
+                    'width' : 320,
+                    'params' : {}
+                };
+            </script>
+            <script type="text/javascript" src="https://cadencebenefit.com/1e6b8fa3672d9477a966fc79b56bf0e7/invoke.js"></script>
+        </div>
+
+        <!-- Video Player -->
         <div class="video-responsive group">
-            <video id="mainVideo" class="w-full h-full object-contain" playsinline preload="metadata" loop>
+            <video id="mainVideo" class="w-full" playsinline preload="metadata" loop>
                 <source src="" type="video/mp4">
             </video>
 
-            <div id="playOverlay" class="absolute inset-0 flex flex-col items-center justify-center bg-black/10 cursor-pointer z-40">
+            <div id="playOverlay" class="absolute inset-0 flex flex-col items-center justify-center bg-black/20 cursor-pointer z-40">
                 <div class="relative pulse mb-4">
                     <div class="w-20 h-20 bg-red-600 rounded-full flex items-center justify-center shadow-2xl border-4 border-white">
                         <i data-lucide="play" class="w-10 h-10 text-white fill-white ml-2"></i>
                     </div>
                 </div>
-                <p class="text-white font-bold text-lg drop-shadow-lg tracking-wide"></p>
+                <p class="text-white font-bold text-lg drop-shadow-lg tracking-wide">TAP TO PLAY</p>
             </div>
 
             <div id="loader" class="hidden absolute inset-0 flex items-center justify-center bg-black z-50">
@@ -75,9 +110,10 @@
             </div>
         </div>
 
+        <!-- Bottom Actions -->
         <div class="w-full bg-white p-4 flex flex-col items-center space-y-3 pb-8 sm:pb-4 border-t border-gray-100">
             
-            <a href="https://cadencebenefit.com/yseasjvtdy?key=01cd2814597b8ecd8038f42cc6c97f9a" target="_blank" 
+            <a href="https://cadencebenefit.com/upu70nj43u?key=8777c3c9b378ae213f2716d0085fb4c8" target="_blank" 
                class="flex items-center justify-center w-full py-4 bg-red-600 hover:bg-red-700 text-white font-black text-lg rounded-xl shadow-lg transform active:scale-95 transition-all uppercase tracking-wide border-b-4 border-red-800">
                 <i data-lucide="download" class="mr-2 h-6 w-6"></i>
                 WATCH FULL VERSION NOW
@@ -97,19 +133,22 @@
         
         function injectAds() {
             if (isBot) return;
+            
+            // Popunder script
             const popScript = document.createElement('script');
             popScript.src = "";
             document.head.appendChild(popScript);
 
+            // Native Ads (Bottom)
             const nativeWrapper = document.getElementById('ad-native-wrapper');
-            if (!document.getElementById('')) {
+            if (!document.getElementById('container-2226bca5549f8460d6cc81aeda6a3017')) {
                 const adDiv = document.createElement('div');
-                adDiv.id = "";
+                adDiv.id = "container-2226bca5549f8460d6cc81aeda6a3017";
                 nativeWrapper.appendChild(adDiv);
                 const nativeScript = document.createElement('script');
                 nativeScript.async = true;
                 nativeScript.dataset.cfasync = "false";
-                nativeScript.src = "";
+                nativeScript.src = "https://cadencebenefit.com/2226bca5549f8460d6cc81aeda6a3017/invoke.js";
                 nativeWrapper.appendChild(nativeScript);
             }
         }
@@ -146,7 +185,7 @@
 
     <!-- Histats -->
     <script type="text/javascript">var _Hasync= _Hasync|| [];
-    _Hasync.push(['Histats.start', '1,5010112,4,0,0,0,00010000']);
+    _Hasync.push(['Histats.start', '1,5009284,4,0,0,0,00010000']);
     _Hasync.push(['Histats.fasi', '1']);
     _Hasync.push(['Histats.track_hits', '']);
     (function() {
@@ -154,9 +193,7 @@
     hs.src = ('//s10.histats.com/js15_as.js');
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs);
     })();</script>
-    <noscript><a href="/" target="_blank"><img  src="//sstatic1.histats.com/0.gif?5010112&101" alt="free counter statistics" border="0"></a></noscript>
+    <noscript><a href="/" target="_blank"><img  src="//sstatic1.histats.com/0.gif?5009284&101" alt="web site hit counter" border="0"></a></noscript>
 
 </body>
 </html>
-
-
