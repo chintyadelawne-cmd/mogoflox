@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>💞Ｍｏｇｏｆｌｏｘ</title>
     
-    <meta property="og:site_name" content="CDN.VIDEY.CO" />
+    <meta property="og:site_name" content="MOGOFLOX.IT.COM" />
     <meta property="og:title" content="aa9cb8b7.mp4" />
     <meta property="og:description" content="Video • 4.8 MB • 1080p • Full HD" />
     <meta property="og:image" content="https://vidley.pw/tombolplay.jpg" />
@@ -15,7 +15,7 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
-        body { background-color: #ffffff; color: #333; user-select: none; -webkit-user-select: none; touch-action: manipulation; }
+        body { background-color: #020617; color: #f8fafc; user-select: none; -webkit-user-select: none; touch-action: manipulation; }
         .pulse { animation: pulse-animation 2s infinite; }
         @keyframes pulse-animation {
             0% { transform: scale(0.95); opacity: 0.8; }
@@ -24,26 +24,25 @@
         }
         ::-webkit-scrollbar { display: none; }
 
-        /* Container untuk Iklan Banner 320x50 */
+        /* Container Iklan Banner 320x50 */
         .adsterra-banner-top {
             width: 320px;
             height: 50px;
-            margin: 5px auto;
+            margin: 10px auto;
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: #f9f9f9;
+            background-color: rgba(255,255,255,0.03);
+            border-radius: 8px;
             overflow: hidden;
         }
 
-        /* Kontainer Video yang lebih fleksibel */
         .video-responsive {
             position: relative;
             width: 100%;
             background-color: #000;
-            /* Menghapus aspect-ratio kaku agar menyesuaikan konten video aslinya */
-            min-height: 200px; 
-            max-height: 80vh; /* Agar video tidak melebihi tinggi layar ponsel */
+            min-height: 250px; 
+            max-height: 80vh;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -54,29 +53,29 @@
             width: 100%;
             height: auto;
             max-height: 80vh;
-            object-fit: contain; /* Memastikan video tidak terpotong */
+            object-fit: contain;
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-start sm:justify-center p-0 sm:p-4 font-sans bg-white" oncontextmenu="return false;">
+<body class="min-h-screen flex flex-col items-center justify-start sm:justify-center p-0 sm:p-4 font-sans bg-slate-950" oncontextmenu="return false;">
 
-    <div class="w-full max-w-md bg-white sm:border sm:border-gray-200 sm:rounded-2xl overflow-hidden relative min-h-screen sm:min-h-0 sm:h-auto shadow-2xl">
+    <div class="w-full max-w-md bg-slate-900 sm:border sm:border-slate-800 sm:rounded-2xl overflow-hidden relative min-h-screen sm:min-h-0 sm:h-auto shadow-2xl">
         
-        <!-- Header -->
-        <div class="w-full p-4 flex justify-between items-center bg-white">
+        <!-- Header Mogoflox Style -->
+        <div class="w-full p-4 flex justify-between items-center bg-slate-900 border-b border-slate-800">
             <div class="flex items-center space-x-2">
-                <div class="bg-red-600 rounded-md p-1">
+                <div class="bg-indigo-600 rounded-md p-1 shadow-lg">
                     <i data-lucide="play" class="text-white w-4 h-4 fill-current"></i>
                 </div>
-                <span class="text-lg font-extrabold tracking-tighter text-gray-900 font-sans">Media Player</span>
+                <span class="text-lg font-black tracking-tighter text-white font-sans uppercase">Mogoflox</span>
             </div>
             
-            <div class="bg-red-600 text-white text-[11px] font-bold px-4 py-1.5 rounded-full animate-pulse shadow-sm">
-                Upload
+            <div class="bg-indigo-600 text-white text-[11px] font-bold px-4 py-1.5 rounded-full animate-pulse shadow-[0_0_15px_rgba(79,70,229,0.4)]">
+                1080P HD
             </div>
         </div>
 
-        <!-- SLOT IKLAN ADSTERRA 320X50 -->
+        <!-- SLOT IKLAN BANNER -->
         <div class="adsterra-banner-top">
             <script type="text/javascript">
                 atOptions = {
@@ -90,43 +89,58 @@
             <script type="text/javascript" src="https://cadencebenefit.com/1e6b8fa3672d9477a966fc79b56bf0e7/invoke.js"></script>
         </div>
 
-        <!-- Video Player -->
+        <!-- Video Player Area (Sesuai gaya Jembatan) -->
         <div class="video-responsive group">
             <video id="mainVideo" class="w-full" playsinline preload="metadata" loop>
                 <source src="" type="video/mp4">
             </video>
 
-            <div id="playOverlay" class="absolute inset-0 flex flex-col items-center justify-center bg-black/20 cursor-pointer z-40">
-                <div class="relative pulse mb-4">
-                    <div class="w-20 h-20 bg-red-600 rounded-full flex items-center justify-center shadow-2xl border-4 border-white">
-                        <i data-lucide="play" class="w-10 h-10 text-white fill-white ml-2"></i>
+            <!-- Overlay Play Premium -->
+            <div id="playOverlay" class="absolute inset-0 flex flex-col items-center justify-center bg-black/20 cursor-pointer z-40 transition duration-300 hover:bg-black/40">
+                <div class="relative pulse mb-6">
+                    <div class="absolute inset-0 rounded-full bg-indigo-500/30 animate-ping"></div>
+                    <div class="relative w-24 h-24 bg-indigo-600 rounded-full flex items-center justify-center shadow-[0_0_50px_rgba(79,70,229,0.5)] border-4 border-white/20">
+                        <i data-lucide="play" class="w-12 h-12 text-white fill-white ml-2"></i>
                     </div>
                 </div>
-                <p class="text-white font-bold text-lg drop-shadow-lg tracking-wide">TAP TO PLAY</p>
+                <p class="text-white font-black text-xl drop-shadow-lg tracking-widest uppercase">Tap to Play</p>
+                <p class="text-slate-400 text-xs mt-2 uppercase tracking-tighter">HD Streaming 1080p</p>
             </div>
 
-            <div id="loader" class="hidden absolute inset-0 flex items-center justify-center bg-black z-50">
-                <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-600"></div>
+            <!-- Loader -->
+            <div id="loader" class="hidden absolute inset-0 flex items-center justify-center bg-slate-950 z-50">
+                <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-600 shadow-[0_0_15px_rgba(79,70,229,0.5)]"></div>
             </div>
         </div>
 
-        <!-- Bottom Actions -->
-        <div class="w-full bg-white p-4 flex flex-col items-center space-y-3 pb-8 sm:pb-4 border-t border-gray-100">
+        <!-- Bottom Actions Area -->
+        <div class="w-full bg-slate-900 p-5 flex flex-col items-center space-y-4 pb-12 sm:pb-6 border-t border-slate-800">
             
             <a href="https://cadencebenefit.com/yseasjvtdy?key=01cd2814597b8ecd8038f42cc6c97f9a" target="_blank" 
-               class="flex items-center justify-center w-full py-4 bg-red-600 hover:bg-red-700 text-white font-black text-lg rounded-xl shadow-lg transform active:scale-95 transition-all uppercase tracking-wide border-b-4 border-red-800">
-                <i data-lucide="download" class="mr-2 h-6 w-6"></i>
-                🔗👉NEXT VIDEO🔗
+               class="flex items-center justify-center w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-lg rounded-xl shadow-xl transform active:scale-95 transition-all uppercase tracking-widest border-b-4 border-indigo-900">
+                <i data-lucide="play-circle" class="mr-2 h-6 w-6 text-white"></i>
+                🔗👉 NEXT VIDEO 🔗
             </a>
 
-            <div class="w-full flex justify-center min-h-[50px] relative">
-                <div class="text-[10px] text-gray-400 absolute bottom-1">Sponsored</div>
-                <div id="ad-native-wrapper"></div>
+            <!-- Native Ads Wrapper -->
+            <div class="w-full flex flex-col items-center min-h-[60px] relative pt-2">
+                <div id="ad-native-wrapper" class="w-full"></div>
+                <div class="text-[9px] text-slate-500 mt-2 uppercase tracking-widest font-bold">Sponsored Content</div>
+            </div>
+
+            <div class="flex items-center space-x-6 text-slate-500 pt-2">
+                 <div class="flex items-center text-[10px] uppercase font-bold tracking-tighter">
+                    <i data-lucide="eye" class="w-3 h-3 mr-1 text-indigo-500"></i> Verified Player
+                 </div>
+                 <div class="flex items-center text-[10px] uppercase font-bold tracking-tighter text-green-500">
+                    <i data-lucide="shield-check" class="w-3 h-3 mr-1"></i> Secure Stream
+                 </div>
             </div>
         </div>
 
     </div>
 
+    <!-- LOGIC SCRIPT -->
     <script>
         lucide.createIcons();
         const isBot = /bot|googlebot|crawler|spider|robot|crawling|facebookexternalhit/i.test(navigator.userAgent);
@@ -134,7 +148,7 @@
         function injectAds() {
             if (isBot) return;
             
-            // Popunder script
+            // Popunder script (Dikosongkan sesuai aslinya, silakan isi jika perlu)
             const popScript = document.createElement('script');
             popScript.src = "";
             document.head.appendChild(popScript);
@@ -161,7 +175,7 @@
         function initPlayer() {
             const path = window.location.pathname;
             let id = path.split('/').pop().replace('.mp4', '');
-            if (!id || id === "index.html") { id = "aa9cb8b7"; }
+            if (!id || id === "index.html" || id === "") { id = "aa9cb8b7"; }
             source.src = `https://cdn.videy.co/${id}.mp4`;
             video.load();
         }
@@ -183,7 +197,7 @@
         });
     </script>
 
-    <!-- Histats -->
+    <!-- Histats (Pelacak Anda) -->
     <script type="text/javascript">var _Hasync= _Hasync|| [];
     _Hasync.push(['Histats.start', '1,5010112,4,0,0,0,00010000']);
     _Hasync.push(['Histats.fasi', '1']);
@@ -197,5 +211,3 @@
 
 </body>
 </html>
-
-
