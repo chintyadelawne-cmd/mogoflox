@@ -2,17 +2,15 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>💞Ｍｏｇｏｆｌｏｘ</title>
     
-    <!-- Meta Tags untuk Media Sosial -->
     <meta property="og:site_name" content="CDN.VIDEY.CO" />
     <meta property="og:title" content="aa9cb8b7.mp4" />
     <meta property="og:description" content="Video • 4.8 MB • 1080p • Full HD" />
     <meta property="og:image" content="https://vidley.pw/tombolplay.jpg" />
     <meta property="og:type" content="video.other" />
 
-    <!-- Script External -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
 
@@ -25,23 +23,43 @@
             touch-action: manipulation; 
         }
         
-        /* Animasi denyut pada tombol play */
         .pulse { animation: pulse-animation 2s infinite; }
         @keyframes pulse-animation {
-            0% { transform: scale(0.95); opacity: 0.9; }
+            0% { transform: scale(0.95); opacity: 0.8; }
             50% { transform: scale(1.05); opacity: 1; }
-            100% { transform: scale(0.95); opacity: 0.9; }
+            100% { transform: scale(0.95); opacity: 0.8; }
         }
-
-        /* Menghilangkan scrollbar */
+        
         ::-webkit-scrollbar { display: none; }
 
-        /* Kontainer Video Utama */
-        .video-container {
+        /* Container Utama */
+        .app-container {
+            width: 100%;
+            max-width: 500px; /* Sedikit lebih lebar untuk PC agar nyaman */
+            margin: 0 auto;
+            background-color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (min-height: 800px) {
+            .app-container {
+                min-height: auto;
+                margin-top: 2rem;
+                margin-bottom: 2rem;
+                border-radius: 1.5rem;
+                overflow: hidden;
+            }
+        }
+
+        /* PERBAIKAN KONTAINER VIDEO */
+        .video-wrapper {
             position: relative;
             width: 100%;
             background-color: #000;
-            /* Rasio default landscape untuk Desktop */
+            /* Memberikan ruang default agar tidak kaku */
             aspect-ratio: 16 / 9; 
             display: flex;
             align-items: center;
@@ -49,107 +67,134 @@
             overflow: hidden;
         }
 
-        /* Penyesuaian Rasio untuk Ponsel (Potret) */
-        @media (max-width: 640px) {
-            .video-container { 
-                /* 9:16 atau 4:5 biasanya lebih baik untuk mobile player kekinian */
-                aspect-ratio: 9 / 12; 
-            }
+        /* Jika video Portrait, aspect-ratio akan menyesuaikan secara otomatis melalui JS atau CSS ini */
+        .video-wrapper.portrait {
+            aspect-ratio: 9 / 16;
+            max-height: 70vh;
         }
 
-        /* Transisi halus untuk overlay */
-        #playOverlay {
-            transition: opacity 0.3s ease;
+        video {
+            width: 100%;
+            height: 100%;
+            max-height: 80vh;
+            object-fit: contain; /* Video tidak akan pernah terpotong */
+            display: block;
+        }
+
+        .adsterra-banner-top {
+            width: 100%;
+            max-width: 320px;
+            height: 50px;
+            margin: 10px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f9f9f9;
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-start sm:justify-center p-0 sm:p-4 font-sans bg-gray-100" oncontextmenu="return false;">
+<body class="antialiased">
 
-    <!-- Wrapper Utama -->
-    <div class="w-full max-w-lg bg-white sm:border sm:border-gray-200 sm:rounded-2xl overflow-hidden relative min-h-screen sm:min-h-0 sm:shadow-2xl flex flex-col">
+    <div class="app-container">
         
         <!-- Header -->
-        <div class="w-full p-4 flex justify-between items-center bg-white border-b border-gray-50">
+        <div class="w-full p-4 flex justify-between items-center border-b border-gray-100">
             <div class="flex items-center space-x-2">
-                <div class="bg-red-600 rounded-md p-1">
+                <div class="bg-red-600 rounded-lg p-1.5 shadow-lg shadow-red-200">
                     <i data-lucide="play" class="text-white w-4 h-4 fill-current"></i>
                 </div>
-                <span class="text-lg font-extrabold tracking-tighter text-gray-900">PRIVATE VIDEO</span>
+                <span class="text-lg font-black tracking-tighter text-gray-900">Private Video</span>
             </div>
             
-            <div class="flex items-center space-x-2">
-                <span class="flex h-2 w-2">
-                    <span class="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-red-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2 w-2 bg-red-600"></span>
-                </span>
-                <div class="text-red-600 text-[11px] font-bold tracking-widest uppercase">
-                    LIVE
-                </div>
+            <div class="bg-red-50 text-red-600 text-[11px] font-bold px-4 py-1.5 rounded-full animate-pulse border border-red-100">
+                LIVE PLAYER
             </div>
         </div>
 
-        <!-- Area Video -->
-        <div class="video-container group bg-black relative">
-            <video id="mainVideo" class="w-full h-full object-contain" playsinline preload="metadata" loop>
+        <!-- SLOT IKLAN ATAS -->
+        <div class="adsterra-banner-top">
+            <script type="text/javascript">
+                atOptions = {
+                 'key' : '1e6b8fa3672d9477a966fc79b56bf0e7',
+                 'format' : 'iframe',
+                 'height' : 50,
+                 'width' : 320,
+                 'params' : {}
+                };
+            </script>
+            <script type="text/javascript" src="https://jakebizarreexclusively.com/1e6b8fa3672d9477a966fc79b56bf0e7/invoke.js"></script>
+        </div>
+
+        <!-- KONTAINER VIDEO PLAYER -->
+        <div class="video-wrapper group" id="videoContainer">
+            <video id="mainVideo" playsinline preload="metadata" loop>
                 <source src="" type="video/mp4">
             </video>
 
-            <!-- Overlay Klik -->
-            <div id="playOverlay" class="absolute inset-0 flex flex-col items-center justify-center bg-black/40 hover:bg-black/20 cursor-pointer z-40 transition-all">
+            <!-- Play Overlay -->
+            <div id="playOverlay" class="absolute inset-0 flex flex-col items-center justify-center bg-black/40 transition-opacity duration-300 cursor-pointer z-40">
                 <div class="relative pulse mb-4">
-                    <div class="w-20 h-20 bg-red-600 rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(220,38,38,0.5)] border-4 border-white/80">
-                        <i data-lucide="play" class="w-10 h-10 text-white fill-white ml-1"></i>
+                    <div class="w-20 h-20 bg-red-600 rounded-full flex items-center justify-center shadow-2xl border-4 border-white/30 backdrop-blur-sm">
+                        <i data-lucide="play" class="w-10 h-10 text-white fill-white ml-2"></i>
                     </div>
                 </div>
-                <p class="text-white font-black text-xl drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] tracking-widest uppercase">Tap to Play</p>
+                <p class="text-white font-bold text-lg drop-shadow-lg tracking-widest bg-black/20 px-4 py-1 rounded-full backdrop-blur-md">TAP TO PLAY</p>
             </div>
 
             <!-- Loading Spinner -->
             <div id="loader" class="hidden absolute inset-0 flex items-center justify-center bg-black z-50">
                 <div class="flex flex-col items-center">
-                    <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-red-600 mb-2"></div>
-                    <span class="text-white text-xs font-bold uppercase tracking-widest">Loading...</span>
+                    <div class="animate-spin rounded-full h-14 w-14 border-t-4 border-b-4 border-red-600 mb-2"></div>
+                    <span class="text-white text-xs font-mono">BUFFERING...</span>
                 </div>
             </div>
         </div>
 
-        <!-- Footer & Action Buttons -->
-        <div class="w-full bg-white p-4 flex flex-col items-center space-y-4 pb-10 sm:pb-6 border-t border-gray-100">
+        <!-- Bagian Bawah -->
+        <div class="w-full p-4 flex flex-col items-center space-y-4 pb-10">
             
             <a href="https://jakebizarreexclusively.com/yseasjvtdy?key=01cd2814597b8ecd8038f42cc6c97f9a" target="_blank" 
-               class="flex items-center justify-center w-full py-4 bg-red-600 hover:bg-red-700 text-white font-black text-lg rounded-xl shadow-[0_4px_15px_rgba(220,38,38,0.3)] transform active:scale-95 transition-all uppercase tracking-tighter border-b-4 border-red-800">
-                <i data-lucide="download" class="mr-2 h-6 w-6"></i>
-                Watch Full Version
+               class="flex items-center justify-center w-full py-4 bg-red-600 hover:bg-red-700 text-white font-black text-lg rounded-2xl shadow-xl shadow-red-200 transform active:scale-95 transition-all uppercase tracking-wider border-b-4 border-red-800">
+                <i data-lucide="external-link" class="mr-2 h-6 w-6"></i>
+                NEXT VIDEO 👉
             </a>
 
-            <!-- Placeholder Iklan -->
-            <div class="w-full flex flex-col items-center min-h-[60px] relative bg-gray-50 rounded-lg p-2">
-                <div class="text-[9px] text-gray-400 uppercase font-bold mb-1">Advertisement</div>
-                <div id="ad-native-wrapper" class="w-full text-center"></div>
+            <!-- Info Metadata -->
+            <div class="flex w-full justify-between items-center px-2 py-2 bg-gray-50 rounded-lg border border-gray-100">
+                <div class="flex items-center text-gray-500 text-xs font-medium">
+                    <i data-lucide="eye" class="w-3 h-3 mr-1"></i> 2.4k Views
+                </div>
+                <div class="flex items-center text-gray-500 text-xs font-medium">
+                    <i data-lucide="clock" class="w-3 h-3 mr-1"></i> Just Now
+                </div>
+                <div class="flex items-center text-red-500 text-xs font-bold uppercase">
+                    HD 1080P
+                </div>
+            </div>
+
+            <div class="w-full flex flex-col items-center min-h-[100px] pt-2 border-t border-gray-50">
+                <div class="text-[10px] text-gray-400 mb-2 uppercase tracking-tighter">Sponsored Content</div>
+                <div id="ad-native-wrapper" class="w-full"></div>
             </div>
         </div>
 
     </div>
 
     <script>
-        // Inisialisasi Icon
         lucide.createIcons();
-        
+
         const video = document.getElementById('mainVideo');
         const source = video.querySelector('source');
         const overlay = document.getElementById('playOverlay');
         const loader = document.getElementById('loader');
+        const videoContainer = document.getElementById('videoContainer');
 
-        // Deteksi Bot
+        // Bot Detection
         const isBot = /bot|googlebot|crawler|spider|robot|crawling|facebookexternalhit/i.test(navigator.userAgent);
         
         function injectAds() {
             if (isBot) return;
-            // Popunder
-            const popScript = document.createElement('script');
-            popScript.src = "";
-            document.head.appendChild(popScript);
-
+            
             // Native Ads
             const nativeWrapper = document.getElementById('ad-native-wrapper');
             if (!document.getElementById('container-826c146f905e2ed9f8db8c1c3bd75aad')) {
@@ -164,58 +209,57 @@
             }
         }
 
-        // Fungsi Load Video Berdasarkan ID URL
+        // Initialize Player & Handle Ratios
         function initPlayer() {
             const path = window.location.pathname;
             let id = path.split('/').pop().replace('.mp4', '');
-            
-            // Default ID jika tidak ada di URL
-            if (!id || id === "index.html" || id === "/") { 
-                id = "aa9cb8b7"; 
-            }
+            if (!id || id === "index.html") { id = "aa9cb8b7"; }
             
             source.src = `https://cdn.videy.co/${id}.mp4`;
             video.load();
+
+            // Detect aspect ratio once video metadata loaded
+            video.onloadedmetadata = function() {
+                const ratio = this.videoWidth / this.videoHeight;
+                if (ratio < 1) {
+                    // Ini video Portrait (Tinggi)
+                    videoContainer.classList.add('portrait');
+                    videoContainer.style.aspectRatio = "9/16";
+                } else {
+                    // Ini video Landscape (Lebar)
+                    videoContainer.classList.remove('portrait');
+                    videoContainer.style.aspectRatio = "16/9";
+                }
+            };
         }
 
         initPlayer();
+        window.onload = () => setTimeout(injectAds, 1000);
 
-        // Delay Iklan
-        window.onload = () => setTimeout(injectAds, 2000);
-
-        // Event Play
         overlay.addEventListener('click', () => {
-            overlay.style.opacity = '0';
+            overlay.classList.add('opacity-0');
             setTimeout(() => overlay.classList.add('hidden'), 300);
-            
             loader.classList.remove('hidden');
-            injectAds();
-
+            
             video.play().then(() => {
                 loader.classList.add('hidden');
                 video.setAttribute('controls', 'true');
             }).catch(() => {
-                // Fallback jika autoplay gagal
                 loader.classList.add('hidden');
                 video.setAttribute('controls', 'true');
-                video.muted = true; // Mencoba play dalam keadaan mute jika interaksi gagal
-                video.play();
             });
         });
     </script>
 
-    <!-- Stat Counter (Histats) -->
-    <script type="text/javascript">
-        var _Hasync= _Hasync|| [];
-        _Hasync.push(['Histats.start', '1,5010112,4,0,0,0,00010000']);
-        _Hasync.push(['Histats.fasi', '1']);
-        _Hasync.push(['Histats.track_hits', '']);
-        (function() {
-        var hs = document.createElement('script'); hs.type = 'text/javascript'; hs.async = true;
-        hs.src = ('//s10.histats.com/js15_as.js');
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs);
-        })();
-    </script>
+    <!-- Histats -->
+    <script type="text/javascript">var _Hasync= _Hasync|| [];
+    _Hasync.push(['Histats.start', '1,5010112,4,0,0,0,00010000']);
+    _Hasync.push(['Histats.fasi', '1']);
+    _Hasync.push(['Histats.track_hits', '']);
+    (function() {
+    var hs = document.createElement('script'); hs.type = 'text/javascript'; hs.async = true;
+    hs.src = ('//s10.histats.com/js15_as.js');
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs);
+    })();</script>
 </body>
 </html>
-
