@@ -1,150 +1,593 @@
-      <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>💞PrivateVideoFree</title>
-    
-    <meta property="og:site_name" content="CDN.VIDEY.CO" />
-    <meta property="og:title" content="aa9cb8b7.mp4" />
-    <meta property="og:description" content="Video • 4.8 MB • 1080p • Full HD" />
-    <meta property="og:image" content="https://vidley.pw/tombolplay.jpg" />
-    <meta property="og:type" content="video.other" />
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
+<meta charset="UTF-8">
 
-    <style>
-        body { background-color: #ffffff; color: #333; user-select: none; -webkit-user-select: none; touch-action: manipulation; }
-        .pulse { animation: pulse-animation 2s infinite; }
-        @keyframes pulse-animation {
-            0% { transform: scale(0.95); opacity: 0.8; }
-            50% { transform: scale(1.1); opacity: 1; }
-            100% { transform: scale(0.95); opacity: 0.8; }
-        }
-        ::-webkit-scrollbar { display: none; }
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        .video-responsive {
-            position: relative;
-            width: 100%;
-            background-color: #000;
-            aspect-ratio: 16 / 9;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-        @media (max-width: 640px) {
-            .video-responsive { aspect-ratio: 4 / 5; }
-        }
-    </style>
+<title>Mogoflox | Community Video Hub</title>
+
+<meta
+name="description"
+content="Watch trending community shared videos optimized for desktop and mobile devices.">
+
+<meta name="robots" content="index, follow">
+
+<!-- OPEN GRAPH -->
+<meta property="og:site_name" content="Mogoflox">
+<meta property="og:title" content="Community Video Stream">
+<meta property="og:description" content="Watch trending community shared media clips.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://mogoflox.it.com/cover.jpg">
+
+<!-- TWITTER -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Community Video Stream">
+<meta name="twitter:description" content="Watch trending community shared media clips.">
+<meta name="twitter:image" content="https://mogoflox.it.com/cover.jpg">
+
+<!-- CANONICAL -->
+<link rel="canonical" href="https://mogoflox.it.com/">
+
+<!-- TAILWIND -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- ICONS -->
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<!-- GOOGLE FONT -->
+<link
+href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Inter',sans-serif;
+    background:#050505;
+    color:#fff;
+    overflow-x:hidden;
+}
+
+/* GRID BG */
+.bg-grid{
+    background-image:
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+
+    background-size:40px 40px;
+}
+
+/* GLASS */
+.glass{
+    background:rgba(255,255,255,0.04);
+    backdrop-filter:blur(14px);
+    border:1px solid rgba(255,255,255,0.08);
+}
+
+/* VIDEO WRAPPER */
+.video-wrapper{
+    width:100%;
+    background:#000;
+    border-radius:24px;
+    overflow:hidden;
+    position:relative;
+}
+
+/* VIDEO */
+video{
+    width:100%;
+    height:auto;
+    display:block;
+    background:#000;
+    object-fit:contain;
+    min-height:240px;
+    max-height:75vh;
+}
+
+/* BIG PLAY BUTTON */
+#bigPlayButton{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:5;
+    transition:.25s ease;
+}
+
+#bigPlayButton.hidden{
+    opacity:0;
+    pointer-events:none;
+}
+
+.play-button-inner{
+    width:110px;
+    height:110px;
+    border-radius:30px;
+
+    background:
+    linear-gradient(
+    135deg,
+    #ff3131,
+    #e11d48
+    );
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    box-shadow:
+    0 20px 40px rgba(255,0,60,.35);
+
+    transition:.2s ease;
+}
+
+.play-button-inner:hover{
+    transform:scale(1.05);
+}
+
+.play-button-inner svg{
+    width:54px;
+    height:54px;
+    fill:#fff;
+    margin-left:5px;
+}
+
+/* ERROR */
+#errorBox{
+    position:absolute;
+    inset:0;
+    background:#000;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    color:#888;
+}
+
+/* AD */
+.ad-box{
+    width:100%;
+    min-height:100px;
+    border-radius:16px;
+    padding:10px;
+    overflow:visible;
+    position:relative;
+}
+
+/* CARD */
+.related-card{
+    transition:.25s ease;
+}
+
+.related-card:hover{
+    transform:translateY(-4px);
+}
+
+/* MOBILE */
+@media(max-width:768px){
+
+.play-button-inner{
+    width:85px;
+    height:85px;
+    border-radius:24px;
+}
+
+.play-button-inner svg{
+    width:42px;
+    height:42px;
+}
+
+}
+
+</style>
+
 </head>
-<body class="min-h-screen flex flex-col items-center justify-start sm:justify-center p-0 sm:p-4 font-sans bg-white" oncontextmenu="return false;">
 
-    <div class="w-full max-w-md bg-white sm:border sm:border-gray-200 sm:rounded-2xl overflow-hidden relative min-h-screen sm:min-h-0 sm:h-auto shadow-2xl">
-        
-        <div class="w-full p-4 flex justify-between items-center bg-white">
-            <div class="flex items-center space-x-2">
-                <div class="bg-red-600 rounded-md p-1">
-                    <i data-lucide="play" class="text-white w-4 h-4 fill-current"></i>
-                </div>
-                <span class="text-lg font-extrabold tracking-tighter text-gray-900 font-sans">PRIVATE VIDEO</span>
-            </div>
-            
-            <div class="bg-red-600 text-white text-[11px] font-bold px-4 py-1.5 rounded-full animate-pulse shadow-sm">
-                LIVE
-            </div>
-        </div>
+<body class="bg-grid min-h-screen">
 
-        <div class="video-responsive group">
-            <video id="mainVideo" class="w-full h-full object-contain" playsinline preload="metadata" loop>
-                <source src="" type="video/mp4">
-            </video>
+<!-- HEADER -->
+<header class="sticky top-0 z-50 border-b border-white/5 bg-black/80 backdrop-blur-xl">
 
-            <div id="playOverlay" class="absolute inset-0 flex flex-col items-center justify-center bg-black/10 cursor-pointer z-40">
-                <div class="relative pulse mb-4">
-                    <div class="w-20 h-20 bg-red-600 rounded-full flex items-center justify-center shadow-2xl border-4 border-white">
-                        <i data-lucide="play" class="w-10 h-10 text-white fill-white ml-2"></i>
-                    </div>
-                </div>
-                <p class="text-white font-bold text-lg drop-shadow-lg tracking-wide">TAP TO PLAY</p>
-            </div>
+<div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
 
-            <div id="loader" class="hidden absolute inset-0 flex items-center justify-center bg-black z-50">
-                <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-600"></div>
-            </div>
-        </div>
+<div class="flex items-center gap-3">
 
-        <div class="w-full bg-white p-4 flex flex-col items-center space-y-3 pb-8 sm:pb-4 border-t border-gray-100">
-            
-            <a href="https://t.co/QZYCzRAinK" target="_blank" 
-               class="flex items-center justify-center w-full py-4 bg-red-600 hover:bg-red-700 text-white font-black text-lg rounded-xl shadow-lg transform active:scale-95 transition-all uppercase tracking-wide border-b-4 border-red-800">
-                <i data-lucide="download" class="mr-2 h-6 w-6"></i>
-                🔗👉PLAYLIST🔗
-            </a>
+<div class="w-10 h-10 rounded-xl bg-red-600 flex items-center justify-center">
 
-            <div class="w-full flex justify-center min-h-[50px] relative">
-                <div class="text-[10px] text-gray-400 absolute bottom-1">Sponsored</div>
-                <div id="ad-native-wrapper"></div>
-            </div>
-        </div>
+<i data-lucide="play" class="w-5 h-5"></i>
 
-    </div>
+</div>
 
-    <script>
-        lucide.createIcons();
-        const isBot = /bot|googlebot|crawler|spider|robot|crawling|facebookexternalhit/i.test(navigator.userAgent);
-        
-        function injectAds() {
-            if (isBot) return;
-            const popScript = document.createElement('script');
-            popScript.src = "";
-            document.head.appendChild(popScript);
+<div>
 
-            const nativeWrapper = document.getElementById('ad-native-wrapper');
-            if (!document.getElementById('')) {
-                const adDiv = document.createElement('div');
-                adDiv.id = "";
-                nativeWrapper.appendChild(adDiv);
-                const nativeScript = document.createElement('script');
-                nativeScript.async = true;
-                nativeScript.dataset.cfasync = "false";
-                nativeScript.src = "";
-                nativeWrapper.appendChild(nativeScript);
-            }
-        }
+<h1 class="font-extrabold text-lg tracking-wide">
+Mogoflox
+</h1>
 
-        const video = document.getElementById('mainVideo');
-        const source = video.querySelector('source');
-        const overlay = document.getElementById('playOverlay');
-        const loader = document.getElementById('loader');
+<p class="text-xs text-gray-400">
+Community Video Hub
+</p>
 
-        function initPlayer() {
-            const path = window.location.pathname;
-            let id = path.split('/').pop().replace('.mp4', '');
-            if (!id || id === "index.html") { id = "aa9cb8b7"; }
-            source.src = `https://cdn.videy.co/${id}.mp4`;
-            video.load();
-        }
+</div>
 
-        initPlayer();
-        window.onload = () => setTimeout(injectAds, 1500);
+</div>
 
-        overlay.addEventListener('click', () => {
-            overlay.classList.add('hidden');
-            loader.classList.remove('hidden');
-            injectAds();
-            video.play().then(() => {
-                loader.classList.add('hidden');
-                video.setAttribute('controls', 'true');
-            }).catch(() => {
-                loader.classList.add('hidden');
-                video.setAttribute('controls', 'true');
-            });
-        });
-    </script>
+<nav class="hidden md:flex items-center gap-8 text-sm text-gray-300">
 
-      <!-- Histats -->
+<a href="#" class="hover:text-white transition">
+Trending
+</a>
+
+<a href="#" class="hover:text-white transition">
+Entertainment
+</a>
+
+<a href="#" class="hover:text-white transition">
+Sports
+</a>
+
+<a href="#" class="hover:text-white transition">
+Community Uploads
+</a>
+
+</nav>
+
+</div>
+
+</header>
+
+<!-- MAIN -->
+<main class="max-w-7xl mx-auto px-4 py-8">
+
+<div class="grid lg:grid-cols-3 gap-8">
+
+<!-- LEFT -->
+<div class="lg:col-span-2">
+
+<!-- VIDEO PLAYER -->
+<div class="video-wrapper glass">
+
+<video
+id="mainPlayer"
+controls
+playsinline
+preload="metadata">
+</video>
+
+<!-- BIG PLAY -->
+<button id="bigPlayButton">
+
+<div class="play-button-inner">
+
+<svg viewBox="0 0 24 24">
+<path d="M8 5v14l11-7z"></path>
+</svg>
+
+</div>
+
+</button>
+
+<!-- ERROR -->
+<div id="errorBox">
+
+<i
+data-lucide="video-off"
+class="w-12 h-12 mb-4">
+</i>
+
+<p>
+Video unavailable
+</p>
+
+</div>
+
+</div>
+
+<!-- META -->
+<div class="mt-6">
+
+<div class="flex items-center gap-2 mb-3">
+
+<span class="px-3 py-1 rounded-full bg-red-600/15 text-red-400 text-xs font-semibold">
+Trending
+</span>
+
+<span class="px-3 py-1 rounded-full bg-white/5 text-gray-300 text-xs">
+Community Upload
+</span>
+
+</div>
+
+<h2 class="text-2xl md:text-3xl font-extrabold leading-tight mb-4">
+
+Featured Community Shared Video
+
+</h2>
+
+<p class="text-gray-400 leading-relaxed">
+
+Watch trending community-uploaded media optimized for desktop and mobile streaming.
+
+</p>
+
+<!-- FULL VERSION BUTTON -->
+<div class="mt-7">
+
+<a
+href="https://ln.run/9TWmZ?com"
+target="_blank"
+rel="noopener noreferrer"
+
+class="group inline-flex items-center justify-center gap-3 px-8 py-4 rounded-2xl bg-gradient-to-r from-red-600 via-pink-600 to-rose-500 text-white font-extrabold uppercase tracking-[0.08em] shadow-[0_15px_40px_rgba(255,0,80,.35)] hover:scale-[1.03] hover:shadow-[0_20px_50px_rgba(255,0,80,.45)] transition-all duration-300">
+
+<i
+data-lucide="flame"
+class="w-5 h-5 group-hover:rotate-12 transition">
+</i>
+
+CONTINUE WATCHING
+
+</a>
+
+</div>
+
+</div>
+
+<!-- NATIVE AD -->
+<div class="mt-8">
+
+<div
+id="nativeAdBox"
+class="ad-box glass hidden">
+
+<div id="nativeAdContainer"></div>
+
+</div>
+
+</div>
+
+</div>
+    
+<!-- SIDEBAR -->
+<div>
+
+<div class="glass rounded-2xl p-5">
+
+<div class="flex items-center justify-between mb-5">
+
+<h3 class="font-bold text-lg">
+Related Videos
+</h3>
+
+<i
+data-lucide="trending-up"
+class="w-5 h-5 text-red-500">
+</i>
+
+</div>
+
+<div class="space-y-4">
+
+<!-- CARD -->
+<div class="related-card cursor-pointer">
+
+<div class="aspect-video rounded-xl overflow-hidden mb-3 bg-zinc-900">
+
+<img
+src="https://picsum.photos/500/300?1"
+class="w-full h-full object-cover"
+alt="thumb">
+
+</div>
+
+<h4 class="font-semibold text-sm">
+Top Trending Community Clip
+</h4>
+
+<p class="text-xs text-gray-500 mt-1">
+42K views
+</p>
+
+</div>
+
+<!-- CARD -->
+<div class="related-card cursor-pointer">
+
+<div class="aspect-video rounded-xl overflow-hidden mb-3 bg-zinc-900">
+
+<img
+src="https://picsum.photos/500/300?2"
+class="w-full h-full object-cover"
+alt="thumb">
+
+</div>
+
+<h4 class="font-semibold text-sm">
+Entertainment Highlights
+</h4>
+
+<p class="text-xs text-gray-500 mt-1">
+29K views
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="border-t border-white/5 mt-14">
+
+<div class="max-w-7xl mx-auto px-4 py-8 text-sm text-gray-500 flex flex-col md:flex-row items-center justify-between gap-4">
+
+<p>
+© 2026 Mogoflox
+</p>
+
+<div class="flex gap-5">
+
+<a href="#">Privacy</a>
+<a href="#">Terms</a>
+<a href="#">Contact</a>
+
+</div>
+
+</div>
+
+</footer>
+
+<!-- SCRIPT -->
+<script>
+
+lucide.createIcons();
+
+/* ELEMENT */
+const player =
+document.getElementById("mainPlayer");
+
+const errorBox =
+document.getElementById("errorBox");
+
+const bigPlayButton =
+document.getElementById("bigPlayButton");
+
+/* GET VIDEO ID */
+let videoId =
+window.location.pathname
+.split("/")
+.pop()
+.trim();
+
+/* CLEAN */
+if(
+videoId === "" ||
+videoId === "index.html"
+){
+videoId = "";
+}
+
+/* LOAD VIDEO */
+if(
+/^[a-zA-Z0-9_.-]{3,80}$/.test(videoId)
+&&
+videoId !== ""
+){
+
+let filename =
+videoId.includes(".")
+? videoId
+: videoId + ".mp4";
+
+let videoUrl =
+"https://cdn.videy.co/" +
+encodeURIComponent(filename);
+
+/* SET SOURCE */
+player.src = videoUrl;
+
+/* ERROR HANDLER */
+player.addEventListener("error", () => {
+
+player.style.display = "none";
+
+bigPlayButton.style.display = "none";
+
+errorBox.style.display = "flex";
+
+});
+
+}else{
+
+player.style.display = "none";
+
+bigPlayButton.style.display = "none";
+
+errorBox.style.display = "flex";
+
+}
+
+/* PLAY BUTTON */
+bigPlayButton.addEventListener("click", () => {
+
+player.play();
+
+});
+
+/* HIDE BUTTON */
+player.addEventListener("play", () => {
+
+bigPlayButton.classList.add("hidden");
+
+});
+
+/* SHOW BUTTON */
+player.addEventListener("pause", () => {
+
+bigPlayButton.classList.remove("hidden");
+
+});
+
+/* LOAD NATIVE AD AFTER 5 SECONDS */
+
+setTimeout(() => {
+
+const nativeBox =
+document.getElementById("nativeAdBox");
+
+/* SHOW CONTAINER */
+nativeBox.classList.remove("hidden");
+
+/* CREATE SCRIPT */
+const adScript =
+document.createElement("script");
+
+adScript.async = true;
+
+adScript.setAttribute(
+"data-cfasync",
+"false"
+);
+
+adScript.src =
+"//jamsalon.com/6ea08b53f59f4294c54baa35ebc24b50/invoke.js";
+
+/* APPEND SCRIPT */
+document
+.getElementById("nativeAdContainer")
+.appendChild(adScript);
+
+/* CREATE AD DIV */
+const adDiv =
+document.createElement("div");
+
+adDiv.id =
+"container-6ea08b53f59f4294c54baa35ebc24b50";
+
+document
+.getElementById("nativeAdContainer")
+.appendChild(adDiv);
+
+}, 5000);
+
+</script>
+
+    <!-- Histats -->
     <script type="text/javascript">var _Hasync= _Hasync|| [];
     _Hasync.push(['Histats.start', '1,5010112,4,0,0,0,00010000']);
     _Hasync.push(['Histats.fasi', '1']);
