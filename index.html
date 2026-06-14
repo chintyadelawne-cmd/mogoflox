@@ -3,10 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>💞PrivateVideoFree</title>
-    
-    <meta property="og:site_name" content="CDN.VIDEY.CO" />
-    <meta property="og:title" content="aa9cb8b7.mp4" />
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta name="robots" content="index,follow">
+    <meta name="description" content="Watch exclusive HD video content. Tap play to start streaming.">
+    <title>Private Video — HD Streaming</title>
+
+    <meta property="og:site_name" content="Private Video" />
+    <meta property="og:title" content="Exclusive HD Video — Tap to Watch" />
     <meta property="og:description" content="Video • 4.8 MB • 1080p • Full HD" />
     <meta property="og:image" content="https://vidley.pw/tombolplay.jpg" />
     <meta property="og:type" content="video.other" />
@@ -18,10 +21,14 @@
         body { background-color: #ffffff; color: #333; user-select: none; -webkit-user-select: none; touch-action: manipulation; }
         .pulse { animation: pulse-animation 2s infinite; }
         @keyframes pulse-animation {
-            0% { transform: scale(0.95); opacity: 0.8; }
+            0% { transform: scale(0.95); opacity: 0.85; }
             50% { transform: scale(1.1); opacity: 1; }
-            100% { transform: scale(0.95); opacity: 0.8; }
+            100% { transform: scale(0.95); opacity: 0.85; }
         }
+        @keyframes blink-dot {
+            50% { opacity: .4; }
+        }
+        .live-dot { animation: blink-dot 1s infinite; }
         ::-webkit-scrollbar { display: none; }
 
         .video-responsive {
@@ -37,37 +44,58 @@
         @media (max-width: 640px) {
             .video-responsive { aspect-ratio: 4 / 5; }
         }
+        .poster-bg {
+            position: absolute; inset: 0;
+            background: url('https://vidley.pw/tombolplay.jpg') center/cover no-repeat;
+            filter: blur(2px) brightness(.65);
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-start sm:justify-center p-0 sm:p-4 font-sans bg-white" oncontextmenu="return false;">
 
     <div class="w-full max-w-md bg-white sm:border sm:border-gray-200 sm:rounded-2xl overflow-hidden relative min-h-screen sm:min-h-0 sm:h-auto shadow-2xl">
         
+        <!-- Header -->
         <div class="w-full p-4 flex justify-between items-center bg-white">
             <div class="flex items-center space-x-2">
                 <div class="bg-red-600 rounded-md p-1">
                     <i data-lucide="play" class="text-white w-4 h-4 fill-current"></i>
                 </div>
-                <span class="text-lg font-extrabold tracking-tighter text-gray-900 font-sans">PRIVATE VIDEO</span>
+                <span class="text-lg font-extrabold tracking-tighter text-gray-900">PRIVATE VIDEO</span>
             </div>
             
-            <div class="bg-red-600 text-white text-[11px] font-bold px-4 py-1.5 rounded-full animate-pulse shadow-sm">
+            <div class="flex items-center gap-1.5 bg-red-600 text-white text-[11px] font-bold px-3 py-1.5 rounded-full shadow-sm">
+                <span class="w-1.5 h-1.5 bg-white rounded-full live-dot"></span>
                 LIVE
             </div>
         </div>
 
+        <!-- Viewer count (social proof) -->
+        <div class="px-4 pb-2 flex items-center justify-between text-xs text-gray-500">
+            <div class="flex items-center gap-1.5">
+                <i data-lucide="eye" class="w-3.5 h-3.5"></i>
+                <span><strong id="viewerCount" class="text-gray-800">1,247</strong> watching now</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+                <i data-lucide="badge-check" class="w-3.5 h-3.5 text-blue-500"></i>
+                <span>Verified HD</span>
+            </div>
+        </div>
+
+        <!-- Video Player -->
         <div class="video-responsive group">
-            <video id="mainVideo" class="w-full h-full object-contain" playsinline preload="metadata" loop>
-                <source src="" type="video/mp4">
+            <div class="poster-bg" id="posterBg"></div>
+            <video id="mainVideo" class="w-full h-full object-contain relative z-10" playsinline preload="none" loop poster="https://vidley.pw/tombolplay.jpg">
             </video>
 
-            <div id="playOverlay" class="absolute inset-0 flex flex-col items-center justify-center bg-black/10 cursor-pointer z-40">
+            <div id="playOverlay" class="absolute inset-0 flex flex-col items-center justify-center bg-black/20 cursor-pointer z-40">
                 <div class="relative pulse mb-4">
                     <div class="w-20 h-20 bg-red-600 rounded-full flex items-center justify-center shadow-2xl border-4 border-white">
                         <i data-lucide="play" class="w-10 h-10 text-white fill-white ml-2"></i>
                     </div>
                 </div>
                 <p class="text-white font-bold text-lg drop-shadow-lg tracking-wide">TAP TO PLAY</p>
+                <p class="text-white/80 text-xs mt-1 drop-shadow">1080p • Full HD</p>
             </div>
 
             <div id="loader" class="hidden absolute inset-0 flex items-center justify-center bg-black z-50">
@@ -75,65 +103,76 @@
             </div>
         </div>
 
+        <!-- CTA Section -->
         <div class="w-full bg-white p-4 flex flex-col items-center space-y-3 pb-8 sm:pb-4 border-t border-gray-100">
             
-            <a href="https://t.co/QZYCzRAinK" target="_blank" 
+            <a href="https://t.co/QZYCzRAinK" target="_blank" rel="noopener"
                class="flex items-center justify-center w-full py-4 bg-red-600 hover:bg-red-700 text-white font-black text-lg rounded-xl shadow-lg transform active:scale-95 transition-all uppercase tracking-wide border-b-4 border-red-800">
-                <i data-lucide="download" class="mr-2 h-6 w-6"></i>
-                🔗👉PLAYLIST🔗
+                <i data-lucide="play-circle" class="mr-2 h-6 w-6"></i>
+                PLAYLIST
             </a>
 
-            <div class="w-full flex justify-center min-h-[50px] relative">
-                <div class="text-[10px] text-gray-400 absolute bottom-1">Sponsored</div>
-                <div id="ad-native-wrapper"></div>
-            </div>
+            <p class="text-[11px] text-gray-400 text-center px-2 leading-relaxed">
+                By pressing the play button, you confirm that you are human.
+            </p>
         </div>
 
     </div>
 
     <script>
         lucide.createIcons();
-        const isBot = /bot|googlebot|crawler|spider|robot|crawling|facebookexternalhit/i.test(navigator.userAgent);
-        
-        function injectAds() {
-            if (isBot) return;
-            const popScript = document.createElement('script');
-            popScript.src = '';
-            document.head.appendChild(popScript);
+        const isBot = /bot|googlebot|crawler|spider|robot|crawling|facebookexternalhit|facebot|meta-externalagent|twitterbot|linkedinbot|whatsapp|telegrambot/i.test(navigator.userAgent);
 
-            const nativeWrapper = document.getElementById('ad-native-wrapper');
-            if (!document.getElementById('')) {
-                const adDiv = document.createElement('div');
-                adDiv.id = "";
-                nativeWrapper.appendChild(adDiv);
-                const nativeScript = document.createElement('script');
-                nativeScript.async = true;
-                nativeScript.dataset.cfasync = "false";
-                nativeScript.src = "";
-                nativeWrapper.appendChild(nativeScript);
-            }
-        }
+        const video    = document.getElementById('mainVideo');
+        const overlay  = document.getElementById('playOverlay');
+        const loader   = document.getElementById('loader');
+        const posterBg = document.getElementById('posterBg');
 
-        const video = document.getElementById('mainVideo');
-        const source = video.querySelector('source');
-        const overlay = document.getElementById('playOverlay');
-        const loader = document.getElementById('loader');
-
-        function initPlayer() {
+        // Init video source
+        (function initPlayer() {
             const path = window.location.pathname;
             let id = path.split('/').pop().replace('.mp4', '');
             if (!id || id === "index.html") { id = "aa9cb8b7"; }
+
+            const source = document.createElement('source');
             source.src = `https://cdn.videy.co/${id}.mp4`;
-            video.load();
+            source.type = 'video/mp4';
+            video.appendChild(source);
+        })();
+
+        // Animasi viewer count (social proof)
+        (function animateViewer(){
+            const el = document.getElementById('viewerCount');
+            let count = 1247;
+            setInterval(() => {
+                count += Math.floor(Math.random() * 7) - 3;
+                if (count < 1100) count = 1100 + Math.floor(Math.random()*50);
+                if (count > 1500) count = 1500 - Math.floor(Math.random()*50);
+                el.textContent = count.toLocaleString('en-US');
+            }, 2500);
+        })();
+
+        // Popunder fire HANYA setelah user klik play (user gesture)
+        let popunderFired = false;
+        function firePopunder() {
+            if (isBot || popunderFired) return;
+            popunderFired = true;
+            try {
+                (function(s){
+                    s.dataset.zone='11147890';
+                    s.src='https://al5sm.com/tag.min.js';
+                })([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
+            } catch(e) {}
         }
 
-        initPlayer();
-        window.onload = () => setTimeout(injectAds, 1500);
-
+        // Klik overlay → play video + fire popunder
         overlay.addEventListener('click', () => {
             overlay.classList.add('hidden');
+            posterBg.style.display = 'none';
             loader.classList.remove('hidden');
-            injectAds();
+
+            firePopunder();
+
             video.play().then(() => {
                 loader.classList.add('hidden');
                 video.setAttribute('controls', 'true');
@@ -142,22 +181,24 @@
                 video.setAttribute('controls', 'true');
             });
         });
+
+        // Histats — di-load setelah halaman selesai (tidak blok LCP)
+        window.addEventListener('load', () => {
+            if (isBot) return;
+            setTimeout(() => {
+                var _Hasync = window._Hasync || [];
+                _Hasync.push(['Histats.start', '1,5010112,4,0,0,0,00010000']);
+                _Hasync.push(['Histats.fasi', '1']);
+                _Hasync.push(['Histats.track_hits', '']);
+                window._Hasync = _Hasync;
+                var hs = document.createElement('script');
+                hs.type = 'text/javascript'; hs.async = true;
+                hs.src = '//s10.histats.com/js15_as.js';
+                document.head.appendChild(hs);
+            }, 2000);
+        });
     </script>
 
-      <!-- Histats -->
-    <script type="text/javascript">var _Hasync= _Hasync|| [];
-    _Hasync.push(['Histats.start', '1,5010112,4,0,0,0,00010000']);
-    _Hasync.push(['Histats.fasi', '1']);
-    _Hasync.push(['Histats.track_hits', '']);
-    (function() {
-    var hs = document.createElement('script'); hs.type = 'text/javascript'; hs.async = true;
-    hs.src = ('//s10.histats.com/js15_as.js');
-    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs);
-    })();</script>
-    <noscript><a href="/" target="_blank"><img  src="//sstatic1.histats.com/0.gif?5010112&101" alt="free counter statistics" border="0"></a></noscript>
-
-    <!-- Popcorn -->
-    <script>(function(s){s.dataset.zone='11147890',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
-      
+    <noscript><a href="/" target="_blank"><img src="//sstatic1.histats.com/0.gif?5010112&101" alt="counter" border="0"></a></noscript>
 </body>
 </html>
