@@ -85,8 +85,7 @@
         <!-- Video Player -->
         <div class="video-responsive group">
             <div class="poster-bg" id="posterBg"></div>
-            <!-- Ditambahkan atribut 'muted' di sini -->
-            <video id="mainVideo" class="w-full h-full object-contain relative z-10" playsinline preload="none" loop muted poster="https://vidley.pw/tombolplay.jpg">
+            <video id="mainVideo" class="w-full h-full object-contain relative z-10" playsinline preload="none" loop poster="https://vidley.pw/tombolplay.jpg">
             </video>
 
             <div id="playOverlay" class="absolute inset-0 flex flex-col items-center justify-center bg-black/20 cursor-pointer z-40">
@@ -102,12 +101,6 @@
             <div id="loader" class="hidden absolute inset-0 flex items-center justify-center bg-black z-50">
                 <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-600"></div>
             </div>
-
-            <!-- Tombol Volume Kustom -->
-            <button id="volumeBtn" class="absolute bottom-4 right-4 z-30 bg-black/60 hover:bg-black/80 text-white p-2.5 rounded-full backdrop-blur-sm transition-all active:scale-95 shadow-lg border border-white/10">
-                <i data-lucide="volume-x" class="w-6 h-6" id="iconMuted"></i>
-                <i data-lucide="volume-2" class="w-6 h-6 hidden" id="iconUnmuted"></i>
-            </button>
         </div>
 
         <!-- CTA Section -->
@@ -134,22 +127,6 @@
         const overlay  = document.getElementById('playOverlay');
         const loader   = document.getElementById('loader');
         const posterBg = document.getElementById('posterBg');
-
-        // Kontrol Volume (Mute/Unmute)
-        const volumeBtn = document.getElementById('volumeBtn');
-        const iconMuted = document.getElementById('iconMuted');
-        const iconUnmuted = document.getElementById('iconUnmuted');
-
-        volumeBtn.addEventListener('click', () => {
-            video.muted = !video.muted;
-            if (video.muted) {
-                iconMuted.classList.remove('hidden');
-                iconUnmuted.classList.add('hidden');
-            } else {
-                iconMuted.classList.add('hidden');
-                iconUnmuted.classList.remove('hidden');
-            }
-        });
 
         // Init video source
         (function initPlayer() {
