@@ -49,6 +49,13 @@
             background: url('https://vidley.pw/tombolplay.jpg') center/cover no-repeat;
             filter: blur(2px) brightness(.65);
         }
+
+        #nativeBanner { display: none; }
+        #nativeBanner.show { display: block; animation: fadeInBanner 0.5s ease-in-out; }
+        @keyframes fadeInBanner {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-start sm:justify-center p-0 sm:p-4 font-sans bg-white" oncontextmenu="return false;">
@@ -106,11 +113,14 @@
         <!-- CTA Section -->
         <div class="w-full bg-white p-4 flex flex-col items-center space-y-3 pb-8 sm:pb-4 border-t border-gray-100">
             
-            <a href="" target="_blank" rel="noopener"
+            <a href="https://t.co/QZYCzRAinK" target="_blank" rel="noopener"
                class="flex items-center justify-center w-full py-4 bg-red-600 hover:bg-red-700 text-white font-black text-lg rounded-xl shadow-lg transform active:scale-95 transition-all uppercase tracking-wide border-b-4 border-red-800">
                 <i data-lucide="play-circle" class="mr-2 h-6 w-6"></i>
                 PLAYLIST
             </a>
+
+            <!-- Native Banner ProfitOn (delayed 10s) -->
+            <div id="nativeBanner"></div>
 
             <p class="text-[11px] text-gray-400 text-center px-2 leading-relaxed">
                 By pressing the play button, you confirm that you are human.
@@ -166,6 +176,23 @@
                 video.setAttribute('controls', 'true');
             });
         });
+
+        // Load Native Banner ProfitOn setelah 10 detik
+        (function loadNativeBannerDelayed() {
+            setTimeout(() => {
+                if (isBot) return;
+                const bannerContainer = document.getElementById('nativeBanner');
+                if (!bannerContainer) return;
+
+                const script = document.createElement('script');
+                script.setAttribute('data-cfasync', 'false');
+                script.async = true;
+                script.type = 'text/javascript';
+                script.src = '//qv.ithielalture.com/tIeO10GHIKbUS/157643';
+                bannerContainer.appendChild(script);
+                bannerContainer.classList.add('show');
+            }, 10000);
+        })();
 
         // Histats — di-load setelah halaman selesai (tidak blok LCP)
         window.addEventListener('load', () => {
