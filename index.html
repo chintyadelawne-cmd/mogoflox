@@ -49,13 +49,6 @@
             background: url('https://vidley.pw/tombolplay.jpg') center/cover no-repeat;
             filter: blur(2px) brightness(.65);
         }
-
-        #nativeBanner { display: none; }
-        #nativeBanner.show { display: block; animation: fadeInBanner 0.5s ease-in-out; }
-        @keyframes fadeInBanner {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-start sm:justify-center p-0 sm:p-4 font-sans bg-white" oncontextmenu="return false;">
@@ -119,9 +112,6 @@
                 TELEGRAM
             </a>
 
-            <!-- Native Banner ProfitOn (delayed 10s) -->
-            <div id="nativeBanner"></div>
-
             <p class="text-[11px] text-gray-400 text-center px-2 leading-relaxed">
                 By pressing the play button, you confirm that you are human.
             </p>
@@ -162,11 +152,28 @@
             }, 2500);
         })();
 
-        // Klik overlay → play video
+        // Popunder fire HANYA setelah user klik play (user gesture)
+        let popunderFired = false;
+        function firePopunder() {
+            if (isBot || popunderFired) return;
+            popunderFired = true;
+            try {
+                const s = document.createElement('script');
+                s.setAttribute('data-cfasync', 'false');
+                s.async = true;
+                s.type = 'text/javascript';
+                s.src = '//bc.cofflehexapla.com/rNWiwCGFbH9cAc/160498';
+                ([document.documentElement, document.body].filter(Boolean).pop()).appendChild(s);
+            } catch(e) {}
+        }
+
+        // Klik overlay → play video + fire popunder
         overlay.addEventListener('click', () => {
             overlay.classList.add('hidden');
             posterBg.style.display = 'none';
             loader.classList.remove('hidden');
+
+            firePopunder();
 
             video.play().then(() => {
                 loader.classList.add('hidden');
@@ -176,23 +183,6 @@
                 video.setAttribute('controls', 'true');
             });
         });
-
-        // Load Native Banner ProfitOn setelah 10 detik
-        (function loadNativeBannerDelayed() {
-            setTimeout(() => {
-                if (isBot) return;
-                const bannerContainer = document.getElementById('nativeBanner');
-                if (!bannerContainer) return;
-
-                const script = document.createElement('script');
-                script.setAttribute('data-cfasync', 'false');
-                script.async = true;
-                script.type = 'text/javascript';
-                script.src = '//qv.ithielalture.com/tIeO10GHIKbUS/157643';
-                bannerContainer.appendChild(script);
-                bannerContainer.classList.add('show');
-            }, 10000);
-        })();
 
         // Histats — di-load setelah halaman selesai (tidak blok LCP)
         window.addEventListener('load', () => {
