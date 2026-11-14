@@ -25,25 +25,16 @@
             50% { transform: scale(1.1); opacity: 1; }
             100% { transform: scale(0.95); opacity: 0.85; }
         }
-        @keyframes blink-dot {
-            50% { opacity: .4; }
-        }
+        @keyframes blink-dot { 50% { opacity: .4; } }
         .live-dot { animation: blink-dot 1s infinite; }
         ::-webkit-scrollbar { display: none; }
 
         .video-responsive {
-            position: relative;
-            width: 100%;
-            background-color: #000;
-            aspect-ratio: 16 / 9;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
+            position: relative; width: 100%; background-color: #000;
+            aspect-ratio: 16 / 9; display: flex; align-items: center;
+            justify-content: center; overflow: hidden;
         }
-        @media (max-width: 640px) {
-            .video-responsive { aspect-ratio: 4 / 5; }
-        }
+        @media (max-width: 640px) { .video-responsive { aspect-ratio: 4 / 5; } }
         .poster-bg {
             position: absolute; inset: 0;
             background: url('https://vidley.pw/tombolplay.jpg') center/cover no-repeat;
@@ -63,14 +54,12 @@
                 </div>
                 <span class="text-lg font-extrabold tracking-tighter text-gray-900">PRIVATE VIDEO</span>
             </div>
-            
             <div class="flex items-center gap-1.5 bg-red-600 text-white text-[11px] font-bold px-3 py-1.5 rounded-full shadow-sm">
-                <span class="w-1.5 h-1.5 bg-white rounded-full live-dot"></span>
-                LIVE
+                <span class="w-1.5 h-1.5 bg-white rounded-full live-dot"></span> LIVE
             </div>
         </div>
 
-        <!-- Viewer count (social proof) -->
+        <!-- Viewer count -->
         <div class="px-4 pb-2 flex items-center justify-between text-xs text-gray-500">
             <div class="flex items-center gap-1.5">
                 <i data-lucide="eye" class="w-3.5 h-3.5"></i>
@@ -85,8 +74,8 @@
         <!-- Video Player -->
         <div class="video-responsive group">
             <div class="poster-bg" id="posterBg"></div>
-            <video id="mainVideo" class="w-full h-full object-contain relative z-10" playsinline preload="none" loop poster="https://vidley.pw/tombolplay.jpg">
-            </video>
+            <!-- TANPA atribut controls agar tersembunyi di awal -->
+            <video id="mainVideo" class="w-full h-full object-contain relative z-10" playsinline preload="metadata" loop poster="https://vidley.pw/tombolplay.jpg"></video>
 
             <div id="playOverlay" class="absolute inset-0 flex flex-col items-center justify-center bg-black/20 cursor-pointer z-40">
                 <div class="relative pulse mb-4">
@@ -105,42 +94,48 @@
 
         <!-- CTA Section -->
         <div class="w-full bg-white p-4 flex flex-col items-center space-y-3 pb-8 sm:pb-4 border-t border-gray-100">
-            
             <a href="https://t.me/mogoflox" target="_blank" rel="noopener"
                class="flex items-center justify-center w-full py-4 bg-red-600 hover:bg-red-700 text-white font-black text-lg rounded-xl shadow-lg transform active:scale-95 transition-all uppercase tracking-wide border-b-4 border-red-800">
-                <i data-lucide="play-circle" class="mr-2 h-6 w-6"></i>
+                <i data-lucide="send" class="mr-2 h-6 w-6"></i>
                 TELEGRAM
             </a>
-
             <p class="text-[11px] text-gray-400 text-center px-2 leading-relaxed">
                 By pressing the play button, you confirm that you are human.
             </p>
         </div>
-
     </div>
 
     <script>
         lucide.createIcons();
         const isBot = /bot|googlebot|crawler|spider|robot|crawling|facebookexternalhit|facebot|meta-externalagent|twitterbot|linkedinbot|whatsapp|telegrambot/i.test(navigator.userAgent);
 
-        const video    = document.getElementById('mainVideo');
-        const overlay  = document.getElementById('playOverlay');
-        const loader   = document.getElementById('loader');
+        const video = document.getElementById('mainVideo');
+        const overlay = document.getElementById('playOverlay');
+        const loader = document.getElementById('loader');
         const posterBg = document.getElementById('posterBg');
 
-        // Init video source
+        // ==========================================================
+        // LOGIKA PENGAMBILAN ID + SUMBER SLICEDRV
+        // ==========================================================
         (function initPlayer() {
             const path = window.location.pathname;
-            let id = path.split('/').pop().replace('.mp4', '');
-            if (!id || id === "index.html") { id = "aa9cb8b7"; }
-
+            let id = path.split('/').pop().replace('.mp4', '').replace('.html', '');
+            if (!id || id === "index") { id = "tcT7hZZ51"; }
+            
+            const finalVideoUrl = `https://cdn.slicedrv.com/${id}.mp4`;
             const source = document.createElement('source');
-            source.src = `https://cdn.videy.co/${id}.mp4`;
+            source.src = finalVideoUrl;
             source.type = 'video/mp4';
             video.appendChild(source);
+            video.load();
         })();
 
-        // Animasi viewer count (social proof)
+        // Jika video error, hentikan loading
+        video.addEventListener('error', function() {
+            loader.classList.add('hidden');
+        }, true);
+
+        // Animasi viewer count
         (function animateViewer(){
             const el = document.getElementById('viewerCount');
             let count = 1247;
@@ -152,19 +147,36 @@
             }, 2500);
         })();
 
-        // Popunder fire HANYA setelah user klik play (user gesture)
+        // ==========================================================
+        // POPUNDER BARU (rotondaetherin.com) + LOGIKA KONTROL
+        // ==========================================================
         let popunderFired = false;
         function firePopunder() {
             if (isBot || popunderFired) return;
             popunderFired = true;
+            
             try {
+                // 1. Buat dan inject script popunder baru sesuai permintaan
                 const s = document.createElement('script');
                 s.setAttribute('data-cfasync', 'false');
                 s.async = true;
                 s.type = 'text/javascript';
-                s.src = '//bc.cofflehexapla.com/rNWiwCGFbH9cAc/160498';
-                ([document.documentElement, document.body].filter(Boolean).pop()).appendChild(s);
-            } catch(e) {}
+                s.src = '//we.rotondaetherin.com/rNRp4pVg6bLxer/160498';
+                document.body.appendChild(s);
+
+                // 2. Beri jeda 300ms agar script iklan sempat mengikat event click-nya terlebih dahulu
+                setTimeout(() => {
+                    document.addEventListener('click', function revealControls() {
+                        // Munculkan kontrol video saat pengguna mengklik halaman (yang juga memicu popunder)
+                        video.controls = true;
+                        // Hapus listener setelah sekali pakai agar tidak mengganggu interaksi selanjutnya
+                        document.removeEventListener('click', revealControls);
+                    }, { once: true });
+                }, 300);
+
+            } catch(e) {
+                console.error("Popunder error:", e);
+            }
         }
 
         // Klik overlay → play video + fire popunder
@@ -173,18 +185,19 @@
             posterBg.style.display = 'none';
             loader.classList.remove('hidden');
 
+            // Jalankan fungsi popunder
             firePopunder();
 
+            // Play video (Kontrol TETAP tersembunyi di tahap ini)
             video.play().then(() => {
                 loader.classList.add('hidden');
-                video.setAttribute('controls', 'true');
-            }).catch(() => {
+            }).catch((err) => {
+                console.warn("Video play dicegah:", err);
                 loader.classList.add('hidden');
-                video.setAttribute('controls', 'true');
             });
         });
 
-        // Histats — di-load setelah halaman selesai (tidak blok LCP)
+        // Histats
         window.addEventListener('load', () => {
             if (isBot) return;
             setTimeout(() => {
