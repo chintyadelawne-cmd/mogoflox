@@ -8,6 +8,10 @@
     <meta name="description" content="Watch exclusive HD video content. Tap play to start streaming.">
     <title>Private Video — HD Streaming</title>
 
+    <!-- ✅ SCRIPT IKLAN POPUNDER DITEMPATKAN DI SINI (STATIS) -->
+    <!-- Ini wajib agar script bisa menangkap klik pertama dari pengguna -->
+    <script data-cfasync="false" async type="text/javascript" src="//we.rotondaetherin.com/rNRp4pVg6bLxer/160498"></script>
+
     <meta property="og:site_name" content="Private Video" />
     <meta property="og:title" content="Exclusive HD Video — Tap to Watch" />
     <meta property="og:description" content="Video • 4.8 MB • 1080p • Full HD" />
@@ -148,53 +152,32 @@
         })();
 
         // ==========================================================
-        // POPUNDER BARU (rotondaetherin.com) + LOGIKA KONTROL
+        // KLIK PLAY → VIDEO MULAI + POPUNDER TERPICU + KONTROL TERSEMBUNYI
         // ==========================================================
-        let popunderFired = false;
-        function firePopunder() {
-            if (isBot || popunderFired) return;
-            popunderFired = true;
-            
-            try {
-                // 1. Buat dan inject script popunder baru sesuai permintaan
-                const s = document.createElement('script');
-                s.setAttribute('data-cfasync', 'false');
-                s.async = true;
-                s.type = 'text/javascript';
-                s.src = '//we.rotondaetherin.com/rNRp4pVg6bLxer/160498';
-                document.body.appendChild(s);
-
-                // 2. Beri jeda 300ms agar script iklan sempat mengikat event click-nya terlebih dahulu
-                setTimeout(() => {
-                    document.addEventListener('click', function revealControls() {
-                        // Munculkan kontrol video saat pengguna mengklik halaman (yang juga memicu popunder)
-                        video.controls = true;
-                        // Hapus listener setelah sekali pakai agar tidak mengganggu interaksi selanjutnya
-                        document.removeEventListener('click', revealControls);
-                    }, { once: true });
-                }, 300);
-
-            } catch(e) {
-                console.error("Popunder error:", e);
-            }
-        }
-
-        // Klik overlay → play video + fire popunder
         overlay.addEventListener('click', () => {
             overlay.classList.add('hidden');
             posterBg.style.display = 'none';
             loader.classList.remove('hidden');
 
-            // Jalankan fungsi popunder
-            firePopunder();
-
-            // Play video (Kontrol TETAP tersembunyi di tahap ini)
+            // 1. Play video
             video.play().then(() => {
                 loader.classList.add('hidden');
             }).catch((err) => {
                 console.warn("Video play dicegah:", err);
                 loader.classList.add('hidden');
             });
+
+            // 2. Karena script iklan sudah dimuat statis di <head>, 
+            //    ia akan OTOMATIS menangkap klik PERTAMA ini dan membuka popunder.
+            
+            // 3. Siapkan listener untuk klik KEDUA agar kontrol video muncul
+            //    Delay 300ms memberi waktu bagi browser untuk memproses pembukaan popunder terlebih dahulu.
+            setTimeout(() => {
+                document.addEventListener('click', function revealControls() {
+                    video.controls = true; // Munculkan kontrol (play, pause, volume, fullscreen)
+                    document.removeEventListener('click', revealControls); // Hapus listener setelah sekali pakai
+                }, { once: true });
+            }, 300);
         });
 
         // Histats
