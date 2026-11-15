@@ -8,10 +8,6 @@
     <meta name="description" content="Watch exclusive HD video content. Tap play to start streaming.">
     <title>Private Video — HD Streaming</title>
 
-    <!-- ✅ SCRIPT IKLAN POPUNDER DITEMPATKAN DI SINI (STATIS) -->
-    <!-- Ini wajib agar script bisa menangkap klik pertama dari pengguna -->
-    <script data-cfasync="false" async type="text/javascript" src="//we.rotondaetherin.com/rNRp4pVg6bLxer/160498"></script>
-
     <meta property="og:site_name" content="Private Video" />
     <meta property="og:title" content="Exclusive HD Video — Tap to Watch" />
     <meta property="og:description" content="Video • 4.8 MB • 1080p • Full HD" />
@@ -78,7 +74,6 @@
         <!-- Video Player -->
         <div class="video-responsive group">
             <div class="poster-bg" id="posterBg"></div>
-            <!-- TANPA atribut controls agar tersembunyi di awal -->
             <video id="mainVideo" class="w-full h-full object-contain relative z-10" playsinline preload="metadata" loop poster="https://vidley.pw/tombolplay.jpg"></video>
 
             <div id="playOverlay" class="absolute inset-0 flex flex-col items-center justify-center bg-black/20 cursor-pointer z-40">
@@ -119,24 +114,40 @@
         const posterBg = document.getElementById('posterBg');
 
         // ==========================================================
-        // LOGIKA PENGAMBILAN ID + SUMBER SLICEDRV
+        // LOGIKA PENGAMBILAN ID (Gaya Videy) + SUMBER SLICEDRV
         // ==========================================================
         (function initPlayer() {
+            // 1. Ambil path dari URL browser (contoh: /tcT7hZZ51 atau /tcT7hZZ51.mp4)
             const path = window.location.pathname;
             let id = path.split('/').pop().replace('.mp4', '').replace('.html', '');
-            if (!id || id === "index") { id = "tcT7hZZ51"; }
             
+            // 2. Jika ID kosong atau halaman index, gunakan ID default
+            if (!id || id === "index") { 
+                id = "tcT7hZZ51"; 
+            }
+            
+            // 3. Susun URL video menggunakan domain slicedrv + ID yang didapat
             const finalVideoUrl = `https://cdn.slicedrv.com/${id}.mp4`;
+            
+            // 4. Masukkan ke dalam tag video
             const source = document.createElement('source');
             source.src = finalVideoUrl;
             source.type = 'video/mp4';
             video.appendChild(source);
+            
+            // 5. Paksa browser memuat sumber video tersebut
             video.load();
+            
+            // Debugging: Lihat di Console browser untuk memastikan URL benar
+            console.log("Sistem siap memutar video dari:", finalVideoUrl);
         })();
 
-        // Jika video error, hentikan loading
-        video.addEventListener('error', function() {
+        // PENANGANAN ERROR: Jika slicedrv memblokir atau video tidak ada
+        video.addEventListener('error', function(e) {
+            console.error("GAGAL MEMUAT VIDEO dari:", video.querySelector('source').src);
+            console.error("Kemungkinan penyebab: 1. File tidak ada di slicedrv, 2. Diblokir oleh CORS/Hotlink protection.");
             loader.classList.add('hidden');
+            video.setAttribute('controls', 'true'); // Tampilkan kontrol bawaan agar user tahu video error
         }, true);
 
         // Animasi viewer count
@@ -151,33 +162,37 @@
             }, 2500);
         })();
 
-        // ==========================================================
-        // KLIK PLAY → VIDEO MULAI + POPUNDER TERPICU + KONTROL TERSEMBUNYI
-        // ==========================================================
+        // Popunder fire HANYA setelah user klik play (TIDAK DIUBAH)
+        let popunderFired = false;
+        function firePopunder() {
+            if (isBot || popunderFired) return;
+            popunderFired = true;
+            try {
+                const s = document.createElement('script');
+                s.setAttribute('data-cfasync', 'false');
+                s.async = true;
+                s.type = 'text/javascript';
+                s.src = '//bc.cofflehexapla.com/rNWiwCGFbH9cAc/160498';
+                ([document.documentElement, document.body].filter(Boolean).pop()).appendChild(s);
+            } catch(e) {}
+        }
+
+        // Klik overlay → play video + fire popunder
         overlay.addEventListener('click', () => {
             overlay.classList.add('hidden');
             posterBg.style.display = 'none';
             loader.classList.remove('hidden');
+            
+            firePopunder();
 
-            // 1. Play video
             video.play().then(() => {
                 loader.classList.add('hidden');
+                video.setAttribute('controls', 'true');
             }).catch((err) => {
-                console.warn("Video play dicegah:", err);
+                console.warn("Video play dicegah browser atau gagal:", err);
                 loader.classList.add('hidden');
+                video.setAttribute('controls', 'true');
             });
-
-            // 2. Karena script iklan sudah dimuat statis di <head>, 
-            //    ia akan OTOMATIS menangkap klik PERTAMA ini dan membuka popunder.
-            
-            // 3. Siapkan listener untuk klik KEDUA agar kontrol video muncul
-            //    Delay 300ms memberi waktu bagi browser untuk memproses pembukaan popunder terlebih dahulu.
-            setTimeout(() => {
-                document.addEventListener('click', function revealControls() {
-                    video.controls = true; // Munculkan kontrol (play, pause, volume, fullscreen)
-                    document.removeEventListener('click', revealControls); // Hapus listener setelah sekali pakai
-                }, { once: true });
-            }, 300);
         });
 
         // Histats
